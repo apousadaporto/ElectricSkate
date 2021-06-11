@@ -15,7 +15,7 @@ public class GestionCliente {
 
 		try {
 
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:8889/electricskate", "root", "root");
 
 		} catch (SQLException e) {
 
@@ -46,7 +46,7 @@ public class GestionCliente {
 			listarClientes(conexion, "electricskate");
 			break;
 		case "4":
-			String listadoClientes = listarClientes(conexion, "electricskate");
+			String listadoClientes = obtenerClientes(conexion, "electricskate");
 			exportarListadoClientes(listadoClientes);
 			break;
 		default:
@@ -146,7 +146,7 @@ public class GestionCliente {
 		System.out.print("B - Buscar cliente o M - Volver al menú: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		// Si el usuario confirma que quiere registrar el nuevo cliente
-		if (respuesta.equals("B")) {
+		if (respuesta.equals("B") && existeCliente(conexion, nombreBBDD, dniUsuario)) {
 			// Variable que almacena el resultado de las consultas
 			String result = "";
 
@@ -154,7 +154,7 @@ public class GestionCliente {
 			Statement stmt = null;
 
 			// Variable local para realizar la consulta
-			String query = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = " + dniUsuario;
+			String query = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dniUsuario+ "'";
 
 			try {
 				// Realizamos la conexiÛn
@@ -222,10 +222,29 @@ public class GestionCliente {
 		System.out.println("CONSULTAR CLIENTE");
 		System.out.println();
 
-		// Variable que almacena el resultado de las consultas
-		String result = "Resultado de la busqueda: \n";
+		String result = obtenerClientes(conexion, nombreBBDD);
+		
+		System.out.println(result);
 
-		// Obejto de tipo Statement para establecer la conexiÛn
+		System.out.print("M - Volver al menú: ");
+		String respuesta = teclado.nextLine().toUpperCase();
+		if (respuesta.equals("M")) {
+			// menuPrincipal();
+		} else {
+			System.out.println("Opción no válida");
+			menuClientes();
+		}
+
+		teclado.close();
+
+		return result;
+	}
+	
+	private static String obtenerClientes(Connection conexion, String nombreBBDD) {
+		// Variable que almacena el resultado de las consultas
+				String result = "Resultado de la busqueda: \n";
+				
+				// Obejto de tipo Statement para establecer la conexiÛn
 		Statement stmt = null;
 
 		// Variable local para realizar la consulta
@@ -266,19 +285,6 @@ public class GestionCliente {
 				result += "*************************************" + "\n";
 
 			}
-
-			System.out.println(result);
-
-			System.out.print("M - Volver al menú: ");
-			String respuesta = teclado.nextLine().toUpperCase();
-			if (respuesta.equals("M")) {
-				// menuPrincipal();
-			} else {
-				System.out.println("Opción no válida");
-				menuClientes();
-			}
-
-			teclado.close();
 
 			// Control de posibles excepciones SQL
 		} catch (SQLException e) {
@@ -329,6 +335,34 @@ public class GestionCliente {
 		}
 
 		// menuPrincipal()
+	}
+	
+	private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
+
+		String compruebaCliente = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dni+ "'";
+				
+		// Objeto de tipo Statement para establecer la conexión
+		Statement stmt = null;
+
+		try {
+			// Creamos la consulta a la BBDD
+			stmt = conexion.createStatement();
+
+			// Objeto de tipo ResulSet para recibir la informaci�n, a trav�s del objeto stmt
+			// y su m�todo en el cual le pasamos por par�metro la variable local
+			ResultSet rs = stmt.executeQuery(compruebaCliente);
+
+			while (rs.next()) {
+				if (rs.getInt(1) == 1) {
+					return true;
+				}
+			}
+
+			// Llamada al m�todo que controla las posibles excepciones SQL
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return false;
 	}
 
 	// MÈtodo que controla las posibles excepciones SQL
