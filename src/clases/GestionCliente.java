@@ -6,6 +6,12 @@ import java.sql.*;
 
 public class GestionCliente {
 
+public static void main(String[] args) {
+	
+		menuClientes();
+		
+	}
+	
 	// Menú que muestra las opciones para trabajar con los clientes
 	public static void menuClientes() {
 
@@ -15,7 +21,7 @@ public class GestionCliente {
 
 		try {
 
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:8889/electricskate", "root", "root");
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
 
 		} catch (SQLException e) {
 
@@ -154,7 +160,7 @@ public class GestionCliente {
 			Statement stmt = null;
 
 			// Variable local para realizar la consulta
-			String query = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dniUsuario+ "'";
+			String query = "select * " + "from " + nombreBBDD + ".cliente" + " WHERE Dni = '" + dniUsuario + "'";
 
 			try {
 				// Realizamos la conexiÛn
@@ -191,6 +197,7 @@ public class GestionCliente {
 				}
 
 				// Mostramos por pantalla los resultados obtenidos
+				System.out.println();
 				System.out.println(result);
 
 				// Cierre de la conexiÛn
@@ -200,20 +207,19 @@ public class GestionCliente {
 			} catch (SQLException e) {
 				printSQLException(e);
 			}
-			// Llamada al mÈtodo para volver al men˙
-			menuClientes();
 			// Comprobamos que el usuario quiera volver al men˙ sin registrar el cliente
 		} else if (respuesta.equals("M")) {
+			System.out.println();
 			System.out.println("Busqueda cancelada");
-			// GestionSistema.menuPrincipal();
 		} else {
-			System.out.println("Opción no válida");
-			menuClientes();
+			System.out.println();
+			System.out.println("Dni no encontrado en la base de datos");
 		}
 
 		teclado.close();
 	}
 
+	// M�todo que devuelve el listado de los clientes 
 	private static String listarClientes(Connection conexion, String nombreBBDD) {
 
 		Scanner teclado = new Scanner(System.in);
@@ -248,7 +254,7 @@ public class GestionCliente {
 		Statement stmt = null;
 
 		// Variable local para realizar la consulta
-		String query = "select * " + " from " + nombreBBDD + ".cliente" + " ORDER BY nombre";
+		String query = "select * " + "from " + nombreBBDD + ".cliente" + " ORDER BY nombre";
 
 		try {
 
@@ -333,13 +339,11 @@ public class GestionCliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// menuPrincipal()
 	}
 	
 	private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
 
-		String compruebaCliente = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dni+ "'";
+		String compruebaCliente = "select 1 " + "from " + nombreBBDD + ".cliente" + " WHERE Dni = '" + dni + "'";
 				
 		// Objeto de tipo Statement para establecer la conexión
 		Statement stmt = null;
@@ -362,6 +366,7 @@ public class GestionCliente {
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		
 		return false;
 	}
 
