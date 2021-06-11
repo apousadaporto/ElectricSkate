@@ -68,7 +68,7 @@ public class GestionSistema {
 			
 		} while (bucle1 == false);
 		
-
+		
 		String u = "admin";
 		String c = "12345678";
 		boolean bucle = false;
