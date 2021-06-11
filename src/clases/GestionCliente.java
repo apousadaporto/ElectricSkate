@@ -1,47 +1,69 @@
 package clases;
 
 import java.util.Scanner;
+import java.io.*;
 import java.sql.*;
 
 public class GestionCliente {
-	
-	
+
 	// Menú que muestra las opciones para trabajar con los clientes
 	public static void menuClientes() {
 
-		Connection conexion = null;
 		Scanner teclado = new Scanner(System.in);
+
+		Connection conexion = null;
+
+		try {
+
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:8889/electricskate", "root", "root");
+
+		} catch (SQLException e) {
+
+			printSQLException(e);
+		}
 
 		System.out.println("GESTIONAR CLIENTES");
 		System.out.println();
-		System.out.println("Selecciona una operación:");
-		System.out.println("1. Añadir nuevo cliente");
+		System.out.println("Selecciona una operaciÛn:");
+		System.out.println("1. AÒaadir nuevo cliente");
 		System.out.println("2. Consultar cliente");
 		System.out.println("3. Listar clientes");
 		System.out.println("4. Exportar listado de clientes a fichero.txt");
 		System.out.println();
 		System.out.println();
 		System.out.println("M - Volver al menú");
+		System.out.println();
+		System.out.print("Introduzca su elección: ");
 		String opcion = teclado.nextLine().toUpperCase();
 		switch (opcion) {
 		case "1":
-			insertarCliente(conexion, "ElectricSkate");
+			insertarCliente(conexion, "electricskate");
+			break;
+		case "2":
+			buscarCliente(conexion, "electricskate");
+			break;
+		case "3":
+			listarClientes(conexion, "electricskate");
+			break;
+		case "4":
+			String listadoClientes = obtenerClientes(conexion, "electricskate");
+			exportarListadoClientes(listadoClientes);
+			break;
+		default:
+			System.out.println("Opción no disponible");
+			menuClientes();
 			break;
 		}
-		
-		teclado.close();
-
 	}
 
-	// Método para crear un cliente en la BBDD
-	// Método para insertar los valores en los campos de la tabla
+	// MÈtodo para insertar los valores en los campos de la tabla
 	private static void insertarCliente(Connection conexion, String nombreBBDD) {
 
 		Scanner teclado = new Scanner(System.in);
 
 		// Solicitud y recogida de datos al usuario por teclado
 		System.out.println();
-		System.out.println("== AÑADIR CLIENTE ==");
+		System.out.println("== A—ADIR CLIENTE ==");
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos: ");
 		System.out.println();
@@ -62,49 +84,288 @@ public class GestionCliente {
 		System.out.println("DNI: " + dni);
 		System.out.println("E-mail: " + email);
 		System.out.println();
-		System.out.printf("R. Registrar cliente");
-		System.out.println();
-		System.out.print("M - Volver al menú");
+		System.out.print("R - Registrar cliente o M - Volver al menú: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		// Si el usuario confirma que quiere registrar el nuevo cliente
 		if (respuesta.equals("R")) {
+			// Objeto de tipo Statement para establecer la conexi√≥n
+			Statement stmt = null;
+
+			try {
+				// Realizamos la conexiÛn
+				stmt = conexion.createStatement();
+
+				// Variable que almacena la consulta a la BBDD
+				String query = "INSERT INTO " + nombreBBDD + ".cliente VALUES " + "('" + nombre + "','" + apellidos
+						+ "'," + edad + ",'" + dni + "','" + email + "',null)";
+
+				// Ejecutamos la consulta
+				stmt.executeUpdate(query);
+
+				// Mostramos un mensaje por pantalla al haber almacenado los valores
+				// correctamente
+				System.out.println();
+				System.out.println("El cliente " + nombre + "" + apellidos
+						+ " ha sido introducido correctamente en la base de datos.");
+
+				// Cierre de la conexión
+				stmt.close();
+
+				// Llamada al método que controla las posibles excepciones SQL
+			} catch (SQLException e) {
+				printSQLException(e);
+			}
+			// Comprobamos que el usuario quiera volver al men˙ sin registrar el cliente
+		} else if (respuesta.equals("M")) {
+			System.out.println("Registro cancelado");
+			menuClientes();
+		} else {
+			System.out.println("OpciÛn no v·lida");
+			menuClientes();
+		}
+
+		teclado.close();
+	}
+
+	// MÈtodo para buscar un cliente en la BDOO por su DNI
+	private static void buscarCliente(Connection conexion, String nombreBBDD) {
+
+		Scanner teclado = new Scanner(System.in);
+
+		System.out.println();
+		System.out.println("== CONSULTAR CLIENTE ==");
+		System.out.println();
+		System.out.print("Introduzca el DNI del cliente para buscar: ");
+		// Variable con el valor del DNI
+		String dniUsuario = teclado.nextLine();
+		System.out.println();
+		System.out.println("DNI: " + dniUsuario);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.print("B - Buscar cliente o M - Volver al menú: ");
+		String respuesta = teclado.nextLine().toUpperCase();
+		// Si el usuario confirma que quiere registrar el nuevo cliente
+		if (respuesta.equals("B") && existeCliente(conexion, nombreBBDD, dniUsuario)) {
+			// Variable que almacena el resultado de las consultas
+			String result = "";
+
+			// Obejto de tipo Statement para establecer la conexiÛn
+			Statement stmt = null;
+
+			// Variable local para realizar la consulta
+			String query = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dniUsuario+ "'";
+
+			try {
+				// Realizamos la conexiÛn
+				stmt = conexion.createStatement();
+
+				// Objeto de tipo ResulSet para recibir la informaciÛn, a travÈs del objeto stmt
+				// y su mÈtodo en el cual le pasamos por par·metro la variable local
+				ResultSet rs = stmt.executeQuery(query);
+
+				// Bucle, mientras el objeto rs siga recibiendo informaciÛn, almacenamos el
+				// resultado de cada consulta en una variable
+				while (rs.next()) {
+
+					String nombre = rs.getString(1);
+					result += "Nombre: " + nombre + "\n";
+
+					String apellidos = rs.getString(2);
+					result += "Apellidos: " + apellidos + "\n";
+
+					String edad = rs.getString(3);
+					result += "Edad: " + edad + "\n";
+
+					String dni = rs.getString(4);
+					result += "DNI: " + dni + "\n";
+
+					String email = rs.getString(5);
+					result += "E-mail: " + email + "\n";
+
+					String numeroSeriePatinete = rs.getString(6);
+					result += "N˙mero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
+
+					// comentario de prueba
+					result += "*************************************" + "\n";
+				}
+
+				// Mostramos por pantalla los resultados obtenidos
+				System.out.println(result);
+
+				// Cierre de la conexiÛn
+				stmt.close();
+
+				// Llamada al mÈtodo que controla las posibles excepciones SQL
+			} catch (SQLException e) {
+				printSQLException(e);
+			}
+			// Llamada al mÈtodo para volver al men˙
+			menuClientes();
+			// Comprobamos que el usuario quiera volver al men˙ sin registrar el cliente
+		} else if (respuesta.equals("M")) {
+			System.out.println("Busqueda cancelada");
+			// GestionSistema.menuPrincipal();
+		} else {
+			System.out.println("Opción no válida");
+			menuClientes();
+		}
+
+		teclado.close();
+	}
+
+	private static String listarClientes(Connection conexion, String nombreBBDD) {
+
+		Scanner teclado = new Scanner(System.in);
+
+		System.out.println();
+		System.out.println("CONSULTAR CLIENTE");
+		System.out.println();
+
+		String result = obtenerClientes(conexion, nombreBBDD);
+		
+		System.out.println(result);
+
+		System.out.print("M - Volver al menú: ");
+		String respuesta = teclado.nextLine().toUpperCase();
+		if (respuesta.equals("M")) {
+			// menuPrincipal();
+		} else {
+			System.out.println("Opción no válida");
+			menuClientes();
+		}
+
+		teclado.close();
+
+		return result;
+	}
+	
+	private static String obtenerClientes(Connection conexion, String nombreBBDD) {
+		// Variable que almacena el resultado de las consultas
+				String result = "Resultado de la busqueda: \n";
+				
+				// Obejto de tipo Statement para establecer la conexiÛn
+		Statement stmt = null;
+
+		// Variable local para realizar la consulta
+		String query = "select * " + " from " + nombreBBDD + ".cliente" + " ORDER BY nombre";
+
+		try {
+
+			// Objeto de tipo Statement para establecer la conexiÛn con el objeto de tipo
+			// Connection
+			stmt = conexion.createStatement();
+
+			// Objeto de tipo ResulSet para recibir la informaciÛn, a travÈs del objeto stmt
+			// y su mÈtodo en el cual le pasamos por par·metro la variable local
+			ResultSet rs = stmt.executeQuery(query);
+
+			// Bucle, mientras el objeto rs siga recibiendo informaciÛn, almacenamos el
+			// resultado de cada consulta en una variable
+			while (rs.next()) {
+
+				String nombre = rs.getString(1);
+				result += "Nombre: " + nombre + "\n";
+
+				String apellidos = rs.getString(2);
+				result += "Apellidos: " + apellidos + "\n";
+
+				String edad = rs.getString(3);
+				result += "Edad: " + edad + "\n";
+
+				String dni = rs.getString(4);
+				result += "DNI: " + dni + "\n";
+
+				String email = rs.getString(5);
+				result += "E-mail: " + email + "\n";
+
+				String numeroSeriePatinete = rs.getString(6);
+				result += "N˙mero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
+
+				result += "*************************************" + "\n";
+
+			}
+
+			// Control de posibles excepciones SQL
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return result;
+	}
+
+	// MÈtodo para guardar el listado de ordenadores en un fichero
+	private static void exportarListadoClientes(String listado) {
+
+		try {
+
+			// Seleccionamos la ruta y la carpeta en la cual ir· nuestro archivo
+			File ruta = new File("C:" + File.separator + "informes");
+			ruta.mkdir();
+
+			// Creamos la ruta del archivo
+			ruta = new File("C:" + File.separator + "informes" + File.separator + "Listado_clientes.txt");
+
+			// Creamos la carpeta
+			try {
+				ruta.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// Creamos el archivo con un objeto de tipo FileWriter
+			FileWriter fichero = new FileWriter(ruta);
+
+			// Leemos el buffer
+			BufferedWriter buffer = new BufferedWriter(fichero);
+
+			// Escribimos el texto en el buffer
+			buffer.write("LISTADO DE CLIENTES");
+			buffer.newLine();
+			buffer.write(listado);
+
+			// Mensaje informativo
+			System.out.println("El listado de clientes ha sido exportado con Èxito.");
+
+			// Cierre del stream
+			buffer.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// menuPrincipal()
+	}
+	
+	private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
+
+		String compruebaCliente = "select * " + " from " + nombreBBDD + ".cliente" + " WHERE dni = '" + dni+ "'";
+				
 		// Objeto de tipo Statement para establecer la conexión
 		Statement stmt = null;
 
 		try {
-			// Realizamos la conexión
+			// Creamos la consulta a la BBDD
 			stmt = conexion.createStatement();
 
-			// Variable que almacena la consulta a la BBDD
-			String query = "INSERT INTO " + nombreBBDD + ".ordenadores VALUES " + "(null,'" + nombre + "','" + apellidos
-					+ "'," + edad + ",'" + dni + "','" + email + "')";
+			// Objeto de tipo ResulSet para recibir la informaci�n, a trav�s del objeto stmt
+			// y su m�todo en el cual le pasamos por par�metro la variable local
+			ResultSet rs = stmt.executeQuery(compruebaCliente);
 
-			// Ejecutamos la consulta
-			stmt.executeUpdate(query);
+			while (rs.next()) {
+				if (rs.getInt(1) == 1) {
+					return true;
+				}
+			}
 
-			// Mostramos un mensaje por pantalla al haber almacenado los valores
-			// correctamente
-			System.out.println();
-			System.out.println("El cliente " + nombre + "" + apellidos + " ha sido introducido correctamente en la base de datos.");
-
-			// Cierre de la conexión
-			stmt.close();
-
-			// Llamada al método que controla las posibles excepciones SQL
+			// Llamada al m�todo que controla las posibles excepciones SQL
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		// Comprobamos que el usuario quiera volver al menú sin registrar el cliente
-		}else if (respuesta.equals("M")) {
-			System.out.println("Registro cancelado");
-			menuClientes();
-		}else {
-			System.out.println("Opción no válida");
-			menuClientes();
-		}
+		return false;
 	}
 
-	// Método que controla las posibles excepciones SQL
+	// MÈtodo que controla las posibles excepciones SQL
 	private static void printSQLException(SQLException ex) {
 
 		ex.printStackTrace(System.err);
