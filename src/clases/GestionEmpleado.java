@@ -179,7 +179,7 @@ public class GestionEmpleado {
 				System.out.println("===================================");
 
 				while (rs.next()) {
-
+					
 					System.out.println("");
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));

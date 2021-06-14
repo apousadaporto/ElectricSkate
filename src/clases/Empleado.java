@@ -12,7 +12,7 @@ public class Empleado extends Usuario {
 		this.nombreUsuario = nombreUsuario;
 		this.password = password;
 	}
-
+	
 	// Getters & Setters
 	public String getNombreUsuario() {
 		return nombreUsuario;

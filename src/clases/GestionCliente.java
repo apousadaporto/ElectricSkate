@@ -67,7 +67,7 @@ public static void main(String[] args) {
 			break;
 		}
 	}
-
+	
 	// MÈtodo para insertar los valores en los campos de la tabla
 	private static void insertarCliente(Connection conexion, String nombreBBDD) {
 
