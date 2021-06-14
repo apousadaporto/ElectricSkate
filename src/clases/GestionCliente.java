@@ -1,6 +1,9 @@
 package clases;
 
 import java.util.Scanner;
+
+import principal.GestionSistema;
+
 import java.io.*;
 import java.sql.*;
 
@@ -54,6 +57,9 @@ public static void main(String[] args) {
 		case "4":
 			String listadoClientes = obtenerClientes(conexion, "electricskate");
 			exportarListadoClientes(listadoClientes);
+			break;
+		case "M":
+			GestionSistema.menu();
 			break;
 		default:
 			System.out.println("Opción no disponible");
