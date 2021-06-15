@@ -19,5 +19,5 @@ public class Cliente extends Usuario {
 	public void setPatinete(Patinete patinete) {
 		this.patinete = patinete;
 	}
-
+	
 }

@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 
 import java.util.Scanner;
 
+import clases.GestionCliente;
+import clases.GestionPatinete;
+import clases.GestionEmpleado;
 
 public class GestionSistema {
 
@@ -14,9 +17,7 @@ public class GestionSistema {
 
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
 
-			System.out.println("¡Conexión establecida correctamente!");
-			login();
-			
+			login();	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -24,12 +25,66 @@ public class GestionSistema {
 	}
 
 	
+	public static void menu() {
+		boolean bucle = false;
+		
+		do {
+		Scanner sc2 = new Scanner(System.in);
+		System.out.println("");
+		System.out.println("");
+		System.out.println("***************************************************");
+		System.out.println("****************   ElectricSkate    ***************");
+		System.out.println("***************************************************");
+		System.out.println("");
+		System.out.println("Bienvenido admin");
+		System.out.println("");
+		System.out.println("   1. Gestionar clientes");
+		System.out.println("");
+		System.out.println("   2. Gestionar patinetes");
+		System.out.println("");
+		System.out.println("   3. Gestionar empleados");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("C. Cerrar sesión");
+		System.out.println("");
+		System.out.print("Introduzca una operación: ");
+		String opc = sc2.nextLine().toUpperCase();
+		
+		switch(opc) {
+		
+		case "1":
+			GestionCliente.menuClientes();
+			break;
+		
+		case "2":
+			GestionPatinete.menuPatinete();
+			break;
+			
+		case "3":
+			GestionEmpleado.menuEmpleados();
+			break;
+			
+		case "C":
+			System.out.println("");
+			System.out.println("Cerrando sesión...");
+			login();
+			break;
+			
+		default:
+			System.out.println("");
+			System.out.println("¡ERROR! Debes introducir una opción válida.");
+			break;
+			
+		}
+		}while(bucle == false);
+	
+	}
 	
 	
 	public static void login() {
 
-		boolean bucle1 = false;
-		do {
+		boolean bucle2 = false;
+		do { 
 			int opc;
 			Scanner sc = new Scanner(System.in);
 			System.out.println("");
@@ -54,7 +109,7 @@ public class GestionSistema {
 				opc = sc.nextInt();
 
 				if (opc == 1) {
-					bucle1 = true;
+					bucle2 = true;
 
 				} else {
 					System.out.println("");
@@ -66,7 +121,7 @@ public class GestionSistema {
 				System.out.println("¡Error! No ha introducido una opción válida.");
 			}
 			
-		} while (bucle1 == false);
+		} while (bucle2 == false);
 		
 		
 		String u = "admin";
@@ -93,6 +148,7 @@ public class GestionSistema {
 		if(usuario.equals(u) && passwd.equals(c)) {
 			System.out.println("");
 			System.out.println("INICIANDO SESIÓN...");
+			menu();
 			bucle = true;
 		
 		}else {
@@ -102,11 +158,7 @@ public class GestionSistema {
 		
 		
 		}while(bucle == false);
-		
-		
-		
 	}
-	
 	
 
 }

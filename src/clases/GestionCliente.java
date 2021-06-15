@@ -1,6 +1,9 @@
 package clases;
 
 import java.util.Scanner;
+
+import principal.GestionSistema;
+
 import java.io.*;
 import java.sql.*;
 
@@ -55,13 +58,16 @@ public class GestionCliente {
 			String listadoClientes = obtenerClientes(conexion, "electricskate");
 			exportarListadoClientes(listadoClientes);
 			break;
+		case "M":
+			GestionSistema.menu();
+			break;
 		default:
 			System.out.println("Opción no disponible");
 			menuClientes();
 			break;
 		}
 	}
-
+	
 	// MÈtodo para insertar los valores en los campos de la tabla
 	private static void insertarCliente(Connection conexion, String nombreBBDD) {
 
