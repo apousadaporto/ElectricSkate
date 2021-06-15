@@ -6,12 +6,12 @@ import java.sql.*;
 
 public class GestionCliente {
 
-public static void main(String[] args) {
-	
+	public static void main(String[] args) {
+
 		menuClientes();
-		
+
 	}
-	
+
 	// Menú que muestra las opciones para trabajar con los clientes
 	public static void menuClientes() {
 
@@ -192,7 +192,6 @@ public static void main(String[] args) {
 					String numeroSeriePatinete = rs.getString(6);
 					result += "N˙mero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
 
-					// comentario de prueba
 					result += "*************************************" + "\n";
 				}
 
@@ -214,12 +213,13 @@ public static void main(String[] args) {
 		} else {
 			System.out.println();
 			System.out.println("Dni no encontrado en la base de datos");
+			menuClientes();
 		}
 
 		teclado.close();
 	}
 
-	// M�todo que devuelve el listado de los clientes 
+	// M�todo que devuelve el listado de los clientes
 	private static String listarClientes(Connection conexion, String nombreBBDD) {
 
 		Scanner teclado = new Scanner(System.in);
@@ -229,7 +229,7 @@ public static void main(String[] args) {
 		System.out.println();
 
 		String result = obtenerClientes(conexion, nombreBBDD);
-		
+
 		System.out.println(result);
 
 		System.out.print("M - Volver al menú: ");
@@ -245,12 +245,12 @@ public static void main(String[] args) {
 
 		return result;
 	}
-	
+
 	private static String obtenerClientes(Connection conexion, String nombreBBDD) {
 		// Variable que almacena el resultado de las consultas
-				String result = "Resultado de la busqueda: \n";
-				
-				// Obejto de tipo Statement para establecer la conexiÛn
+		String result = "Resultado de la busqueda: \n";
+
+		// Objeto de tipo Statement para establecer la conexiÛn
 		Statement stmt = null;
 
 		// Variable local para realizar la consulta
@@ -340,11 +340,12 @@ public static void main(String[] args) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
 
+		// Sentencia con la consulta para comprobar si hay coincidencias de DNI
 		String compruebaCliente = "select 1 " + "from " + nombreBBDD + ".cliente" + " WHERE Dni = '" + dni + "'";
-				
+
 		// Objeto de tipo Statement para establecer la conexión
 		Statement stmt = null;
 
@@ -366,7 +367,7 @@ public static void main(String[] args) {
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		
+
 		return false;
 	}
 
