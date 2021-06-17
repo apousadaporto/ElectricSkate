@@ -9,10 +9,6 @@ import java.sql.*;
 
 public class GestionEmpleado {
 
-	public static void main(String[] args) {
-	
-
-	}
 	
 	public static void menuEmpleados() {
 		Scanner sc = new Scanner(System.in);
@@ -207,7 +203,7 @@ public class GestionEmpleado {
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));
 					System.out.println("");
-					System.out.println("El listado de empleados \"empleados.txt\" se ha guardado en la ruta \"C:\\empleados\".");
+					
 				}
 
 				if (wt != null)
@@ -223,6 +219,8 @@ public class GestionEmpleado {
 		} finally {
 			stmt.close();
 		}
+		
+		System.out.println("El listado de empleados \"empleados.txt\" se ha guardado en la ruta \"C:\\empleados\".");
 		
 	}
 	

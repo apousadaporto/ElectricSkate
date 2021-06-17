@@ -12,15 +12,8 @@ import clases.GestionEmpleado;
 public class GestionSistema {
 
 	public static void main(String[] args) {
-		
-		try {
-
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
-
-			login();	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+			login();		
 
 	}
 
@@ -125,7 +118,7 @@ public class GestionSistema {
 		
 		
 		String u = "admin";
-		String c = "12345678";
+		String c = "1234";
 		boolean bucle = false;
 		Scanner sc2 = new Scanner(System.in);
 		

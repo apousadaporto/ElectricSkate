@@ -3,6 +3,9 @@ package clases;
 import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
+
+import principal.GestionSistema;
+
 // Librerías para restar fechas
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
@@ -47,6 +50,8 @@ public class GestionPatinete {
 		System.out.println();
 		System.out.println();
 		System.out.println("M - Volver al menú.");
+		System.out.println("");
+		System.out.print("Introduzca una opcion: ");
 		String opcion = teclado.nextLine().toUpperCase();
 
 		switch (opcion) {
@@ -80,6 +85,9 @@ public class GestionPatinete {
 			String listadoPatinetes = obtenerPatinetes(conexion, "electricskate");
 			exportarListadoPatinetes(listadoPatinetes);
 			break;
+			
+		case "M":
+			GestionSistema.menu();
 
 		default:
 			System.out.println("Por favor, seleccione una de las opciones disponibles.");
@@ -103,6 +111,7 @@ public class GestionPatinete {
 		int kmViaje = 0;
 
 		// Recogida de datos introducidos por el usuario
+		System.out.println();
 		System.out.println("AÑADIR PATINETE");
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");
@@ -177,6 +186,7 @@ public class GestionPatinete {
 		Scanner teclado = new Scanner(System.in);
 
 		// Recogida de datos introducidos por el usuario
+		System.out.println();
 		System.out.println("ALQUILAR PATINETE");
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");
@@ -257,6 +267,7 @@ public class GestionPatinete {
 		Scanner teclado = new Scanner(System.in);
 
 		// Recogida de datos introducidos por el usuario
+		System.out.println();
 		System.out.println("DEVOLVER PATINETE");
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");

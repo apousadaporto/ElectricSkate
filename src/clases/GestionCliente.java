@@ -37,7 +37,7 @@ public class GestionCliente {
 		System.out.println("4. Exportar listado de clientes a fichero.txt");
 		System.out.println();
 		System.out.println();
-		System.out.println("M - Volver al menú");
+		System.out.println("M - Volver al menu");
 		System.out.println();
 		System.out.print("Introduzca su eleccion: ");
 		String opcion = teclado.nextLine().toUpperCase();
@@ -358,7 +358,8 @@ public class GestionCliente {
 			buffer.write(listado);
 
 			// Mensaje informativo
-			System.out.println("El listado de clientes ha sido exportado con Èxito.");
+			System.out.println("El listado de clientes ha sido exportado con exito.");
+			System.out.println();
 
 			// Cierre del stream
 			buffer.close();
@@ -366,6 +367,7 @@ public class GestionCliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		GestionSistema.menu();
 	}
 
 	// Metodo para asegurarnos que nos introduzcan un numero entero
