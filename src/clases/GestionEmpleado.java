@@ -10,14 +10,19 @@ import java.sql.*;
 public class GestionEmpleado {
 
 	
+	// Menú que muestra las opciones para trabajar con los empleados
 	public static void menuEmpleados() {
+		
+		
 		Scanner sc = new Scanner(System.in);
 
+		
+		// Realizamos la conexion a la base de datos
 		Connection conexion = null;
 
 		try {
 
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
+			conexion = DriverManager.getConnection(Utilidades.URL_BBDD, Utilidades.USER_BBDD, Utilidades.PASSWD_BBDD);
 
 			System.out.println("");
 			System.out.println("");
@@ -28,7 +33,7 @@ public class GestionEmpleado {
 			System.out.println("   2. Exportar listado de empleados a fichero.txt");
 			System.out.println("");
 			System.out.println("");
-			System.out.println("M. Volver al menú");
+			System.out.println("M. Volver al menu");
 			System.out.println("");
 			System.out.print("Introduzca una operación: ");
 			String opc = sc.nextLine().toUpperCase();
@@ -36,11 +41,11 @@ public class GestionEmpleado {
 			switch(opc) {
 			
 			case "1":
-				insertarEmpleado(conexion, "electricskate");
+				insertarEmpleado(conexion, Utilidades.NOMBRE_BBDD);
 				break;
 				
 			case "2":
-				exportarFicheroEmmpleados(conexion, "electricskate");
+				exportarFicheroEmmpleados(conexion, Utilidades.NOMBRE_BBDD);
 				break;
 			
 			case "M":
@@ -56,17 +61,20 @@ public class GestionEmpleado {
 			
 		} catch (SQLException e) {
 
-			printSQLException(e);
+			Utilidades.printSQLException(e);
 		}
 		
 		
 	}
 	
 	
+	// Metodo para insertar un empleado en la base de datos
 	public static void insertarEmpleado(Connection conexion, String nombreBBDD) {
 		
+		// Instanciamos un objeto de tipo Scanner
 		Scanner sc = new Scanner(System.in);
 		
+		// Solicitud de datos al usuario
 		System.out.println("");
 		System.out.println("AÑADIR EMPLEADO");
 		System.out.println("");
@@ -101,6 +109,7 @@ public class GestionEmpleado {
 		
 		boolean bucle = true;
 		
+		// Bucle do-while para controlar la respuesta del usuario
 		do {
 		System.out.print("R. Registrar Cliente / M. Volver al menú: ");
 		String respuesta = sc.nextLine().toUpperCase();
@@ -122,18 +131,17 @@ public class GestionEmpleado {
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
 
-				// Mostramos un mensaje por pantalla al haber almacenado los valores
-				// correctamente
+				// Mostramos un mensaje por pantalla al haber almacenado los valores correctamente
 				System.out.println();
 				System.out.println("El empleado " + nombre + " " + apellidos
 						+ " ha sido introducido correctamente en la base de datos.");
 
-				// Cierre de la conexiÃ³n
+				// Cierre de la conexion
 				stmt.close();
 
 				// Llamada al metodo que controla las posibles excepciones SQL
 			} catch (SQLException e) {
-				printSQLException(e);
+				Utilidades.printSQLException(e);
 			}
 			
 			bucle = false;
@@ -152,7 +160,7 @@ public class GestionEmpleado {
 		
 	}
 	
-	
+	// Método para exportar fichero con el listado de todos los empleados
 	public static void exportarFicheroEmmpleados(Connection conexion, String nombreBBDD) throws SQLException{
 		
 		Statement stmt = null;
@@ -163,17 +171,22 @@ public class GestionEmpleado {
 			stmt = conexion.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			try {
-				// crear directorio para guardar los informes
+				// Creamos un directorio para almacenar el fichero txt con el listado de empleados
 				File dir = new File("C:\\empleados");
 				dir.mkdir();
+				
+				// Creamos el archivo empleados.txt dentro del directorio que hemos creado
 				File archivo = new File("C:\\empleados\\empleados.txt");
+				
+				// Creamos un objeto de tipo FileWriter
 				FileWriter wt = new FileWriter(archivo);
 
 				System.out.println("");
 				System.out.println("===================================");
 				System.out.println("======= Listado Empleados =======");
 				System.out.println("===================================");
-
+				
+				// Escribimos los empleados en el fichero
 				while (rs.next()) {
 					
 					System.out.println("");
@@ -208,14 +221,15 @@ public class GestionEmpleado {
 
 				if (wt != null)
 					wt.close();
-
+			
+			// Controlamos las excepciones
 			} catch (IOException e) {
 				System.out.println("¡ERROR!");
 				e.printStackTrace();
 			}
 
 		} catch (SQLException e) {
-			printSQLException(e);
+			Utilidades.printSQLException(e);
 		} finally {
 			stmt.close();
 		}
@@ -227,20 +241,6 @@ public class GestionEmpleado {
 	
 	
 	
-	private static void printSQLException(SQLException ex) {
-
-		ex.printStackTrace(System.err);
-		System.err.println("SQLState: " + ex.getSQLState());
-		System.err.println("Error Code: " + ex.getErrorCode());
-		System.err.println("Message: " + ex.getMessage());
-
-		Throwable t = ex.getCause();
-
-		while (t != null) {
-			System.out.println("Cause: " + t);
-			t = t.getCause();
-		}
-
-	}
+	
 
 }

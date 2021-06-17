@@ -13,11 +13,13 @@ public class GestionSistema {
 
 	public static void main(String[] args) {
 			
+			// Llamamos al metodo login()
 			login();		
 
 	}
 	
-
+	
+	// Metodo con el que mostramos el menu principal del programa
 	public static void menu() {
 		boolean bucle = false;
 		
@@ -29,7 +31,7 @@ public class GestionSistema {
 		System.out.println("****************   ElectricSkate    ***************");
 		System.out.println("***************************************************");
 		System.out.println("");
-		System.out.println("Bienvenido admin");
+		System.out.println("Bienvenido/a!");
 		System.out.println("");
 		System.out.println("   1. Gestionar clientes");
 		System.out.println("");
@@ -40,9 +42,12 @@ public class GestionSistema {
 		System.out.println("");
 		System.out.println("C. Cerrar sesión");
 		System.out.println("");
+		
+		// Pedimos al usuario que introduzca una opcion y la almacenamos en un String
 		System.out.print("Introduzca una operación: ");
 		String opc = sc2.nextLine().toUpperCase();
 		
+		// Dependiendo de la opcion introducida por el usuario, llamamos al menú correspondiente (Cliente, Patinete, Empleados)
 		switch(opc) {
 		
 		case "1":
@@ -74,6 +79,7 @@ public class GestionSistema {
 	}
 	
 	
+	// Metodo con el cual el usuario se logea en el sistema
 	public static void login() {
 
 		boolean bucle2 = false;
@@ -122,6 +128,7 @@ public class GestionSistema {
 		boolean bucle = false;
 		Scanner sc2 = new Scanner(System.in);
 		
+		
 		do {
 		System.out.println("");
 		System.out.println("");
@@ -131,6 +138,8 @@ public class GestionSistema {
 		System.out.println("*******  INICIA SESIÓN  *******");
 		System.out.println("*******************************");
 		System.out.println("");
+		
+		// Pedimos usuario y contraseña al usuario
 		System.out.print("       Introduzca su usuario: ");
 		String usuario = sc2.next();
 		System.out.println("");
@@ -138,12 +147,14 @@ public class GestionSistema {
 		String passwd = sc2.next();
 		System.out.println("");
 		
+		// Si los datos coinciden, llamamos al metodo menu()
 		if(usuario.equals(u) && passwd.equals(c)) {
 			System.out.println("");
 			System.out.println("INICIANDO SESIÓN...");
 			menu();
 			bucle = true;
 		
+		// Si los datos no coinciden, se repite de nuevo el bucle y se vuelven a pedir los datos al usuario
 		}else {
 			System.out.println("");
 			System.out.println("Los datos introducidos son incorrectos, inténtelo de nuevo...");
