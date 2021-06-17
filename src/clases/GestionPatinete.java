@@ -26,9 +26,9 @@ public class GestionPatinete {
 		Connection conexion = null;
 
 		try {
-			// Creamos una conexi�n con la base de datos electricskate
+			// Creamos una conexion con la base de datos electricskate
 			conexion = DriverManager.getConnection(Utilidades.URL_BBDD, Utilidades.USER_BBDD, Utilidades.PASSWD_BBDD);
-			// Llama al m�todo que captura excepciones SQL
+			// Llama al metodo que captura excepciones SQL
 		} catch (SQLException e) {
 			Utilidades.printSQLException(e);
 		}
@@ -36,9 +36,9 @@ public class GestionPatinete {
 		System.out.println();
 		System.out.println("GESTIONAR PATINETES");
 		System.out.println();
-		System.out.println("Seleccione una operaci�n:");
+		System.out.println("Seleccione una operacion:");
 		System.out.println();
-		System.out.println("1. A�adir nuevo patinete");
+		System.out.println("1. Anyadir nuevo patinete");
 		System.out.println("2. Alquilar patinete");
 		System.out.println("3. Devolver patinete");
 		System.out.println("4. Listar patinetes alquilados");
@@ -61,7 +61,7 @@ public class GestionPatinete {
 	            +".oyy-`::``````.           \n"  
 	            +"-yhy:/://///:oh.      	");
 		System.out.println();
-		System.out.println("M - Volver al men�.");
+		System.out.println("M - Volver al menu.");
 		System.out.println("");
 		System.out.print("Introduzca una opcion: ");
 		String opcion = teclado.nextLine().toUpperCase();
@@ -104,7 +104,7 @@ public class GestionPatinete {
 
 		default:
 			System.out.println("Por favor, seleccione una de las opciones disponibles.");
-			// Vuelve al men� de patinete
+			// Vuelve al menu de patinete
 			menuPatinete();
 			break;
 		}
@@ -113,7 +113,7 @@ public class GestionPatinete {
 
 	}
 
-	// M�todo para crear un patinete en la BBDD
+	// Metodo para crear un patinete en la BBDD
 	private static void insertarPatinete(Connection conexion, String nombreBBDD) {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -125,7 +125,7 @@ public class GestionPatinete {
 
 		// Recogida de datos introducidos por el usuario
 		System.out.println();
-		System.out.println("A�ADIR PATINETE");
+		System.out.println("ANYADIR PATINETE");
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");
 		System.out.println();
@@ -135,21 +135,21 @@ public class GestionPatinete {
 		String modelo = teclado.nextLine();
 		System.out.print("Color: ");
 		String color = teclado.nextLine();
-		System.out.print("N�mero de serie: ");
+		System.out.print("Numero de serie: ");
 		String numeroSerie = teclado.nextLine();
 		System.out.println();
-		System.out.print("R - Registrar patinete o M - Volver al men�: ");
+		System.out.print("R - Registrar patinete o M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		System.out.println();
 
 		// Si el usuario desea registrar el patinete
 		if (respuesta.equals("R")) {
 
-			// Objeto Statement que establece la conexi�n
+			// Objeto Statement que establece la conexion
 			Statement stmt = null;
 
 			try {
-				// Se realiza la conexi�n
+				// Se realiza la conexion
 				stmt = conexion.createStatement();
 
 				// Variable que almacena la consulta a la BBDD
@@ -160,25 +160,25 @@ public class GestionPatinete {
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
 
-				// Mensaje que confirma la ejecuci�n de la consulta
+				// Mensaje que confirma la ejecucion de la consulta
 				System.out.println();
 				System.out.println("El patinete " + numeroSerie + " " + marca + " " + modelo + " " + color
 						+ ", ha sido introducido correctamente en la base de datos.");
 
-				// Cerramos la conexi�n
+				// Cerramos la conexion
 				stmt.close();
 
 				// Volvemos al menu principal
 				GestionSistema.menu();
 
-				// Llama al m�todo que captura excepciones SQL
+				// Llama al metodo que captura excepciones SQL
 			} catch (SQLException e) {
 				Utilidades.printSQLException(e);
 			}
 
-			// Si el usuario desea volver al men�
+			// Si el usuario desea volver al menu
 		} else if (respuesta.equals("M")) {
-			// Mensaje que informa que no se ha realizado la ejecuci�n de la consulta
+			// Mensaje que informa que no se ha realizado la ejecucion de la consulta
 			System.out.println();
 			System.out.println("El patinete " + numeroSerie + " " + marca + " " + modelo + " " + color
 					+ ", no se ha introducido en la base de datos.");
@@ -186,18 +186,18 @@ public class GestionPatinete {
 			// Volvemos al menu principal
 			GestionSistema.menu();
 
-			// Si el usuario introduce una opci�n no v�lida
+			// Si el usuario introduce una opcion no valida
 		} else {
 			System.out.println();
-			System.out.println("La opci�n introducida no es v�lida");
-			// Vuelve al men� de patinete
+			System.out.println("La opcion introducida no es valida");
+			// Vuelve al menu de patinete
 			menuPatinete();
 		}
 		// Cerramos el teclado
 		teclado.close();
 	}
 
-	// M�todo para alquilar un patinete
+	// Metodo para alquilar un patinete
 	private static void alquilarPatinete(Connection conexion, String nombreBBDD) {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -209,27 +209,27 @@ public class GestionPatinete {
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");
 		System.out.println();
-		System.out.print("N�mero de serie: ");
+		System.out.print("Numero de serie: ");
 		String numeroSerie = teclado.nextLine();
 		System.out.print("Dni usuario: ");
 		String dniUsuario = teclado.nextLine();
 		System.out.print("Fecha del alquiler (AAAA-MM-DD): ");
 		String fechaA = teclado.nextLine();
-		System.out.print("Fecha de devoluci�n (AAAA-MM-DD): ");
+		System.out.print("Fecha de devolucion (AAAA-MM-DD): ");
 		String fechaD = teclado.nextLine();
 		System.out.println();
-		System.out.print("R - Registrar alquiler o M - Volver al men�: ");
+		System.out.print("R - Registrar alquiler o M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		System.out.println();
 
 		// Si el usuario desea registrar el alquiler del patinete
 		if (respuesta.equals("R")) {
 
-			// Objeto Statement que establece la conexi�n
+			// Objeto Statement que establece la conexion
 			Statement stmt = null;
 
 			try {
-				// Se realiza la conexi�n
+				// Se realiza la conexion
 				stmt = conexion.createStatement();
 
 				// Variable que almacena la consulta a la BBDD
@@ -246,47 +246,47 @@ public class GestionPatinete {
 				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
-				// Calcula la diferencia en d�as entre las fechas introducidas
+				// Calcula la diferencia en dias entre las fechas introducidas
 				long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
 
-				// Mensaje que confirma la ejecuci�n de la consulta
+				// Mensaje que confirma la ejecucion de la consulta
 				System.out.println();
-				System.out.println("El alquiler ha sido realizado con �xito.");
+				System.out.println("El alquiler ha sido realizado con exito.");
 				System.out.println("El patinete " + numeroSerie + ", ha sido alquilado al cliente con DNI: "
-						+ dniUsuario + ", durante " + diff + " d�a/s.");
+						+ dniUsuario + ", durante " + diff + " dia/s.");
 
-				// Cerramos la conexi�n
+				// Cerramos la conexion
 				stmt.close();
 
 				// Volvemos al menu principal
 				GestionSistema.menu();
 
-				// Llama al m�todo que captura excepciones SQL
+				// Llama al metodo que captura excepciones SQL
 			} catch (SQLException e) {
 				Utilidades.printSQLException(e);
 			}
 
-			// Si el usuario desea volver al men�
+			// Si el usuario desea volver al menu
 		} else if (respuesta.equals("M")) {
-			// Mensaje que informa que no se ha realizado la ejecuci�n de la consulta
+			// Mensaje que informa que no se ha realizado la ejecucion de la consulta
 			System.out.println();
 			System.out.println("Alquiler no realizado.");
 
 			// Volvemos al menu principal
 			GestionSistema.menu();
 
-			// Si el usuario introduce una opci�n no v�lida
+			// Si el usuario introduce una opcion no valida
 		} else {
 			System.out.println();
-			System.out.println("La opci�n introducida no es v�lida");
-			// Vuelve al men� de patinete
+			System.out.println("La opcion introducida no es valida");
+			// Vuelve al menu de patinete
 			menuPatinete();
 		}
 		// Cerramos el teclado
 		teclado.close();
 	}
 
-	// M�todo para gestionar la devoluci�n de un patinete
+	// Metodo para gestionar la devolucion de un patinete
 	private static void devolverPatinete(Connection conexion, String nombreBBDD) {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -298,7 +298,7 @@ public class GestionPatinete {
 		System.out.println();
 		System.out.println("Introduzca los siguientes datos:");
 		System.out.println();
-		System.out.print("N�mero de serie: ");
+		System.out.print("Numero de serie: ");
 		String numeroSerie = teclado.nextLine();
 		System.out.print("Dni usuario: ");
 		String dniUsuario = teclado.nextLine();
@@ -307,21 +307,21 @@ public class GestionPatinete {
 		teclado.nextLine();
 		System.out.print("Fecha del alquiler (AAAA-MM-DD): ");
 		String fechaA = teclado.nextLine();
-		System.out.print("Fecha de devoluci�n (AAAA-MM-DD): ");
+		System.out.print("Fecha de devolucion (AAAA-MM-DD): ");
 		String fechaD = teclado.nextLine();
 		System.out.println();
-		System.out.print("R - Registrar devoluci�n o M - Volver al men�: ");
+		System.out.print("R - Registrar devolucion o M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		System.out.println();
 
-		// Si el usuario desea registrar la devoluci�n del patinete
+		// Si el usuario desea registrar la devolucion del patinete
 		if (respuesta.equals("R")) {
 
-			// Objeto Statement que establece la conexi�n
+			// Objeto Statement que establece la conexion
 			Statement stmt = null;
 
 			try {
-				// Se realiza la conexi�n
+				// Se realiza la conexion
 				stmt = conexion.createStatement();
 
 				// Variable que almacena la consulta a la BBDD
@@ -339,27 +339,27 @@ public class GestionPatinete {
 				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
-				// Calcula la diferencia en d�as entre las fechas introducidas
+				// Calcula la diferencia en dias entre las fechas introducidas
 				long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
 
-				// Mensaje que confirma la ejecuci�n de la consulta
+				// Mensaje que confirma la ejecucion de la consulta
 				System.out.println();
-				System.out.println("La devoluci�n ha sido realizada con �xito.");
+				System.out.println("La devolucion ha sido realizada con exito.");
 				System.out.println("El patinete " + numeroSerie + ", ha sido devuelto por el cliente con DNI: "
-						+ dniUsuario + ". Ha tenido el patinete en alquiler durante " + diff + " d�as.");
+						+ dniUsuario + ". Ha tenido el patinete en alquiler durante " + diff + " dias.");
 
-				// Cerramos la conexi�n
+				// Cerramos la conexion
 				stmt.close();
 
 				// Volvemos al menu principal
 				GestionSistema.menu();
 
-				// Llama al m�todo que captura excepciones SQL
+				// Llama al metodo que captura excepciones SQL
 			} catch (SQLException e) {
 				Utilidades.printSQLException(e);
 			}
 
-			// Si el usuario desea volver al men�
+			// Si el usuario desea volver al menu
 		} else if (respuesta.equals("M")) {
 			System.out.println();
 			System.out.println("Alquiler no realizado.");
@@ -367,24 +367,24 @@ public class GestionPatinete {
 			// Volvemos al menu principal
 			GestionSistema.menu();
 
-			// Si el usuario introduce una opci�n no v�lida
+			// Si el usuario introduce una opcion no valida
 		} else {
-			// Mensaje que informa que no se ha realizado la ejecuci�n de la consulta
+			// Mensaje que informa que no se ha realizado la ejecucion de la consulta
 			System.out.println();
-			System.out.println("La opci�n introducida no es v�lida");
-			// Vuelve al men� de patinete
+			System.out.println("La opcion introducida no es valida");
+			// Vuelve al menu de patinete
 			menuPatinete();
 		}
 		// Cerramos el teclado
 		teclado.close();
 	}
 
-	// M�todo para obtener el listado de patinetes alquilados
+	// Metodo para obtener el listado de patinetes alquilados
 	private static String obtenerPatinetesAlquilados(Connection conexion, String nombreBBDD) {
 		// Variable que almacena el resultado de las consultas
 		String result = "Resultado de la busqueda: \n";
 
-		// Obejto de tipo Statement para establecer la conexi�n
+		// Objeto de tipo Statement para establecer la conexion
 		Statement stmt = null;
 
 		// Variable para realizar la consulta
@@ -392,15 +392,14 @@ public class GestionPatinete {
 
 		try {
 
-			// Objeto de tipo Statement para establecer la conexi�n
+			// Objeto de tipo Statement para establecer la conexion
 			stmt = conexion.createStatement();
 
-			// Objeto de tipo ResulSet para recibir la informaci�n, a trav�s del objeto
-			// stmt
-			// y su m�todo en el cual le pasamos por par�metro la variable local
+			// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto
+			// stmt y su metodo en el cual le pasamos por parametro la variable local
 			ResultSet rs = stmt.executeQuery(query);
 
-			// Mientras rs siga recibiendo informaci�n almacena el resultado en la variable
+			// Mientras rs siga recibiendo informacion almacena el resultado en la variable
 			while (rs.next()) {
 
 				String marca = rs.getString(1);
@@ -416,17 +415,17 @@ public class GestionPatinete {
 				result += "Km recorridos: " + kmRecorridos + "\n";
 
 				String numeroSerie = rs.getString(5);
-				result += "N�mero de serie: " + numeroSerie + "\n";
+				result += "Numero de serie: " + numeroSerie + "\n";
 
 				String numeroDniUsuario = rs.getString(7);
-				// Comprueba que la variable numeroDniUsuario no sea null ni un String vac�o
+				// Comprueba que la variable numeroDniUsuario no sea null ni un String vacio
 				if (numeroDniUsuario != null && !numeroDniUsuario.trim().isEmpty()) {
 					result += "Alquilado por el usuario con DNI: " + numeroDniUsuario + "\n";
 				}
 				result += "*************************************" + "\n";
 			}
 
-			// Llama al m�todo que captura excepciones SQL
+			// Llama al metodo que captura excepciones SQL
 		} catch (SQLException e) {
 			Utilidades.printSQLException(e);
 		}
@@ -434,7 +433,7 @@ public class GestionPatinete {
 		return result;
 	}
 
-	// M�todo que devuelve el listado de patinetes alquilados
+	// Metodo que devuelve el listado de patinetes alquilados
 	private static String listarPatinetesAlquilados(Connection conexion, String nombreBBDD) {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -444,24 +443,24 @@ public class GestionPatinete {
 		System.out.println("CONSULTAR PATINETES ALQUILADOS");
 		System.out.println();
 
-		// Llama al m�todo que almacena la informaci�n de los patinetes alquilados
+		// Llama al metodo que almacena la informacion de los patinetes alquilados
 		String result = obtenerPatinetesAlquilados(conexion, nombreBBDD);
 
 		// Muestra por pantalla los patinetes alquilados
 		System.out.println(result);
 
-		System.out.print("M - Volver al men�: ");
+		System.out.print("M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 
-		// Si el usuario desea volver al men�
+		// Si el usuario desea volver al menu
 		if (respuesta.equals("M")) {
 
 			// Volvemos al menu principal
 			GestionSistema.menu();
 
 		} else {
-			System.out.println("La opci�n introducida no es v�lida");
-			// Vuelve al men� de patinete
+			System.out.println("La opcion introducida no es valida");
+			// Vuelve al menu de patinete
 			menuPatinete();
 		}
 
@@ -471,12 +470,12 @@ public class GestionPatinete {
 		return result;
 	}
 
-	// M�todo para obtener el listado de todos los patinetes
+	// Metodo para obtener el listado de todos los patinetes
 	private static String obtenerPatinetes(Connection conexion, String nombreBBDD) {
 		// Variable que almacena el resultado de las consultas
 		String result = "Resultado de la busqueda: \n";
 
-		// Obejto de tipo Statement para establecer la conexi�n
+		// Obejto de tipo Statement para establecer la conexion
 		Statement stmt = null;
 
 		// Variable para realizar la consulta
@@ -484,15 +483,14 @@ public class GestionPatinete {
 
 		try {
 
-			// Objeto de tipo Statement para establecer la conexi�n
+			// Objeto de tipo Statement para establecer la conexion
 			stmt = conexion.createStatement();
 
-			// Objeto de tipo ResulSet para recibir la informaci�n, a trav�s del objeto
-			// stmt
-			// y su m�todo en el cual le pasamos por par�metro la variable local
+			// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto
+			// stmt y su metodo en el cual le pasamos por parametro la variable local
 			ResultSet rs = stmt.executeQuery(query);
 
-			// Mientras rs siga recibiendo informaci�n almacena el resultado en la variable
+			// Mientras rs siga recibiendo informacion almacena el resultado en la variable
 			while (rs.next()) {
 
 				String marca = rs.getString(1);
@@ -508,17 +506,17 @@ public class GestionPatinete {
 				result += "Km recorridos: " + kmRecorridos + "\n";
 
 				String numeroSerie = rs.getString(5);
-				result += "N�mero de serie: " + numeroSerie + "\n";
+				result += "Numero de serie: " + numeroSerie + "\n";
 
 				String numeroDniUsuario = rs.getString(7);
 
-				// Comprueba que la variable numeroDniUsuario no sea null ni un String vac�o
+				// Comprueba que la variable numeroDniUsuario no sea null ni un String vacio
 				if (numeroDniUsuario != null && !numeroDniUsuario.trim().isEmpty()) {
 					result += "Alquilado por el usuario con DNI: " + numeroDniUsuario + "\n";
 				}
 				result += "*************************************" + "\n";
 			}
-			// Llama al m�todo que captura excepciones SQL
+			// Llama al metodo que captura excepciones SQL
 		} catch (SQLException e) {
 			Utilidades.printSQLException(e);
 		}
@@ -526,7 +524,7 @@ public class GestionPatinete {
 		return result;
 	}
 
-	// M�todo que devuelve el listado de todos los patinetes
+	// Metodo que devuelve el listado de todos los patinetes
 	private static String listarPatinetes(Connection conexion, String nombreBBDD) {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -536,21 +534,21 @@ public class GestionPatinete {
 		System.out.println("CONSULTAR PATINETES TOTALES");
 		System.out.println();
 
-		// Llama al m�todo que almacena la informaci�n de todos los patinetes
+		// Llama al metodo que almacena la informaci�n de todos los patinetes
 		String result = obtenerPatinetes(conexion, nombreBBDD);
 		// Muestra por pantalla todo los patinetes
 		System.out.println(result);
 
-		System.out.print("M - Volver al men�: ");
+		System.out.print("M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
-		// Si el usuario desea volver al men�
+		// Si el usuario desea volver al menu
 		if (respuesta.equals("M")) {
 
 			// Volvemos al menu principal
 			GestionSistema.menu();
 
 		} else {
-			System.out.println("La opci�n introducida no es v�lida");
+			System.out.println("La opcion introducida no es valida");
 
 			// Volvemos al menu de patinete
 			menuPatinete();
@@ -561,12 +559,12 @@ public class GestionPatinete {
 		return result;
 	}
 
-	// M�todo para guardar el listado de patinetes alquilados en un fichero
+	// Metodo para guardar el listado de patinetes alquilados en un fichero
 	private static void exportarListadoPatinetesAlquilados(String listado) {
 
 		try {
 
-			// Seleccionamos la ruta y la carpeta en la cual se guardar� el archivo
+			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
 			ruta.mkdir();
 
@@ -593,7 +591,7 @@ public class GestionPatinete {
 
 			// Mensaje informativo
 			System.out.println();
-			System.out.println("El listado de patinetes alquilados ha sido exportado con �xito.");
+			System.out.println("El listado de patinetes alquilados ha sido exportado con exito.");
 
 			// Cierre del stream
 			buffer.close();
@@ -604,12 +602,12 @@ public class GestionPatinete {
 		GestionSistema.menu();
 	}
 
-	// M�todo para guardar el listado de patinetes en un fichero
+	// Metodo para guardar el listado de patinetes en un fichero
 	private static void exportarListadoPatinetes(String listado) {
 
 		try {
 
-			// Seleccionamos la ruta y la carpeta en la cual se guardar� el archivo
+			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
 			ruta.mkdir();
 
@@ -636,7 +634,7 @@ public class GestionPatinete {
 
 			// Mensaje informativo
 			System.out.println();
-			System.out.println("El listado de patinetes ha sido exportado con �xito.");
+			System.out.println("El listado de patinetes ha sido exportado con exito.");
 
 			// Cierre del stream
 			buffer.close();

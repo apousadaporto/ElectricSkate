@@ -1,3 +1,8 @@
+/**
+ * @author Bernat Vazquez
+ * @version 1.0
+ */
+
 package clases;
 
 import java.util.Scanner;
@@ -10,7 +15,7 @@ import java.sql.*;
 public class GestionEmpleado {
 
 	
-	// Men� que muestra las opciones para trabajar con los empleados
+	// Menu que muestra las opciones para trabajar con los empleados
 	public static void menuEmpleados() {
 		
 		
@@ -28,30 +33,30 @@ public class GestionEmpleado {
 			System.out.println("");
 			System.out.println("GESTIONAR EMPLEADOS");
 			System.out.println("");
-			System.out.println("   1. A�adir nuevo empleado");
+			System.out.println("   1. Anyadir nuevo empleado");
 			System.out.println("");
 			System.out.println("   2. Exportar listado de empleados a fichero.txt");
 			System.out.println("");
 			System.out.println("");
-			System.out.println(        
-			       " 	 .-:::----:::-.   \n"   
-			      +"  `:/-`     ``    `-/:` \n"   
-			      +" -/`      :+oooo/-    `/- \n"   
-			     +" /:      :oooooooo/     :/  \n" 
-			    +" ::      :oooooooo/      :: \n" 
-			    +" o`      -oooooooo-      `o  \n"
-			    +"`+       -oooooooo-       +` \n"
-			    +" o`       -oooooo-       `o  \n"
-			    + " ::        :oooo:        ::  \n"
-			     + "  /:      .+oooo+.      :/  \n" 
-			      + "  -/..:/+oooooooo+/:../-   \n" 
-			       +"    `:+oooooooooooooo+:`    \n" 
-			         + "       .-/+oooooo+/-.      " ); 
+			System.out.println(
+				    "```` ` `````` `.odNMMNdo.````  `````````\n"
+				   +"```````  `` ``+NMMMMMMMMN+``````````````\n"
+				   +"`````````````.MMMMMMMMMMMM-`````````````\n"
+			       +"`````````````.MMMMMMMMMMMM-`````````````\n"
+				   +"``````````````+MMMMMMMMMM+``````````````\n"
+				   +"```````````````.sdNMMNds-```````````````\n"
+				   +"````````````````````````````````````````\n"
+				   +"`````````.odNMm.`-smms-`.mMNdo.```````` \n"
+				   +"`````` -NMMMMMm.`+mm+`.dMMMMMN-````````\n"
+				   +"```````sMMMMMMMd``dm``dMMMMMMMs``````` \n"
+				   +"```````sMMMMMMMMh/MM/yMMMMMMMMy````````\n"
+				   +"````` `sMMMMMMMMMMMMMMMMMMMMMMy````````\n"
+				   +"```````-dMMMMMMMMMMMMMMMMMMMMd-````````");	        
 			System.out.println("");
 			System.out.println("");
 			System.out.println("M. Volver al menu");
 			System.out.println("");
-			System.out.print("Introduzca una operaci�n: ");
+			System.out.print("Introduzca una operacion: ");
 			String opc = sc.nextLine().toUpperCase();
 			
 			switch(opc) {
@@ -70,7 +75,7 @@ public class GestionEmpleado {
 				
 			default:
 				System.out.println("");
-				System.out.println("�ERROR! Debes introducir una opci�n disponible.");
+				System.out.println("ERROR! Debes introducir una opcion disponible.");
 				menuEmpleados();
 				break;
 			}
@@ -92,7 +97,7 @@ public class GestionEmpleado {
 		
 		// Solicitud de datos al usuario
 		System.out.println("");
-		System.out.println("A�ADIR EMPLEADO");
+		System.out.println("ANYADIR EMPLEADO");
 		System.out.println("");
 		System.out.println("  Introduzca los siguientes datos:");
 		System.out.println("");
@@ -119,14 +124,14 @@ public class GestionEmpleado {
 		System.out.println("    DNI: " + dni);
 		System.out.println("    E-mail: " + email);
 		System.out.println("    Nombre de usuario: " + nUsuario);
-		System.out.println("    contrasena: " + contrasena);
+		System.out.println("    Contrasena: " + contrasena);
 		System.out.println("    ===============================");
 		System.out.println("");
 		
 		boolean bucle = true;
 
-		System.out.println();
-		System.out.println();
+		System.out.println("");
+		System.out.println("");
 		System.out.println(        
 			       " 	 .-:::----:::-.   \n"   
 			      +"  `:/-`     ``    `-/:` \n"   
@@ -141,9 +146,13 @@ public class GestionEmpleado {
 			      + "  -/..:/+oooooooo+/:../-   \n" 
 			       +"    `:+oooooooooooooo+:`    \n" 
 			         + "       .-/+oooooo+/-.      " ); 
-//Bucle do-while para controlar la respuesta del usuario
+		
+		System.out.println("");
+		System.out.println("");
+		
+		//Bucle do-while para controlar la respuesta del usuario
 		do {
-		System.out.print("R. Registrar Cliente / M. Volver al men�: ");
+		System.out.print("R. Registrar Cliente / M. Volver al menu: ");
 		String respuesta = sc.nextLine().toUpperCase();
 		
 		switch(respuesta) {
@@ -185,14 +194,14 @@ public class GestionEmpleado {
 		
 		default:
 			System.out.println("");
-			System.out.println("�ERROR! Debe introducir una de las opciones disponibles (R-M)");
+			System.out.println("ERROR! Debe introducir una de las opciones disponibles (R-M)");
 			System.out.println("");
 		}
 		}while(bucle == true);
 		
 	}
 	
-	// M�todo para exportar fichero con el listado de todos los empleados
+	// Metodo para exportar fichero con el listado de todos los empleados
 	public static void exportarFicheroEmmpleados(Connection conexion, String nombreBBDD) throws SQLException{
 		
 		Statement stmt = null;
@@ -225,14 +234,14 @@ public class GestionEmpleado {
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));
 					String nombre = rs.getString(1);
-					System.out.println("N�mero interno: " + nombre);
+					System.out.println("Numero interno: " + nombre);
 					wt.write("Nombre: " + nombre + ("\n"));
 					String apellidos = rs.getString(2);
 					System.out.println("Apellidos: " + apellidos);
 					wt.write("Apellidos: " + apellidos + ("\n"));
 					int edad = rs.getInt(3);
-					System.out.println("Edad: " + edad + " a�os");
-					wt.write("Edad: " + edad + " a�os" + ("\n"));
+					System.out.println("Edad: " + edad + " anyos");
+					wt.write("Edad: " + edad + " anyos" + ("\n"));
 					String dni = rs.getString(4);
 					System.out.println("DNI: " + dni);
 					wt.write("DNI: " + dni + ("\n"));
@@ -256,7 +265,7 @@ public class GestionEmpleado {
 			
 			// Controlamos las excepciones
 			} catch (IOException e) {
-				System.out.println("�ERROR!");
+				System.out.println("ERROR!");
 				e.printStackTrace();
 			}
 
@@ -269,10 +278,4 @@ public class GestionEmpleado {
 		System.out.println("El listado de empleados \"empleados.txt\" se ha guardado en la ruta \"C:\\empleados\".");
 		
 	}
-	
-	
-	
-	
-	
-
 }
