@@ -1,3 +1,8 @@
+/**
+ * @author Andrea Pousada
+ * @version 1.0
+ */
+
 package clases;
 
 public class Patinete {

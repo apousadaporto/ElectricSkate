@@ -1,3 +1,8 @@
+/**
+ * @author Andrea Pousada
+ * @version 1.0
+ */
+
 package clases;
 
 import java.io.*;
@@ -13,12 +18,6 @@ import java.time.format.DateTimeFormatter;
 
 public class GestionPatinete {
 
-	public static void main(String[] args) {
-
-		menuPatinete();
-
-	}
-
 	public static void menuPatinete() {
 
 		// Instanciamos el teclado para pedir datos al usuario
@@ -28,11 +27,10 @@ public class GestionPatinete {
 
 		try {
 			// Creamos una conexión con la base de datos electricskate
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/electricskate", "root", "");
-
+			conexion = DriverManager.getConnection(Utilidades.URL_BBDD, Utilidades.USER_BBDD, Utilidades.PASSWD_BBDD);
 			// Llama al método que captura excepciones SQL
 		} catch (SQLException e) {
-			printSQLException(e);
+			Utilidades.printSQLException(e);
 		}
 
 		System.out.println();
@@ -57,36 +55,37 @@ public class GestionPatinete {
 		switch (opcion) {
 
 		case "1":
-			insertarPatinete(conexion, "electricskate");
+			insertarPatinete(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
 		case "2":
-			alquilarPatinete(conexion, "electricskate");
+			alquilarPatinete(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
 		case "3":
-			devolverPatinete(conexion, "electricskate");
+			devolverPatinete(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
 		case "4":
-			listarPatinetesAlquilados(conexion, "electricskate");
+			listarPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
 		case "5":
-			String listadoPatinetesAlquilados = obtenerPatinetesAlquilados(conexion, "electricskate");
+			String listadoPatinetesAlquilados = obtenerPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD);
 			exportarListadoPatinetesAlquilados(listadoPatinetesAlquilados);
 			break;
 
 		case "6":
-			listarPatinetes(conexion, "electricskate");
+			listarPatinetes(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
 		case "7":
-			String listadoPatinetes = obtenerPatinetes(conexion, "electricskate");
+			String listadoPatinetes = obtenerPatinetes(conexion, Utilidades.NOMBRE_BBDD);
 			exportarListadoPatinetes(listadoPatinetes);
 			break;
-			
+
 		case "M":
+			// Volvemos al menu principal
 			GestionSistema.menu();
 
 		default:
@@ -141,7 +140,8 @@ public class GestionPatinete {
 
 				// Variable que almacena la consulta a la BBDD
 				String query = "INSERT INTO " + nombreBBDD + ".patinete VALUES " + "('" + marca + "','" + modelo + "','"
-						+ color + "'," + kmRecorridos + ",'" + numeroSerie + "'," + disponible + ", NULL)";
+						+ color + "'," + kmRecorridos + ",'" + numeroSerie + "'," + disponible + ", " + kmViaje
+						+ ", NULL)";
 
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
@@ -154,9 +154,12 @@ public class GestionPatinete {
 				// Cerramos la conexión
 				stmt.close();
 
+				// Volvemos al menu principal
+				GestionSistema.menu();
+
 				// Llama al método que captura excepciones SQL
 			} catch (SQLException e) {
-				printSQLException(e);
+				Utilidades.printSQLException(e);
 			}
 
 			// Si el usuario desea volver al menú
@@ -165,8 +168,9 @@ public class GestionPatinete {
 			System.out.println();
 			System.out.println("El patinete " + numeroSerie + " " + marca + " " + modelo + " " + color
 					+ ", no se ha introducido en la base de datos.");
-			// Vuelve al menú de patinete
-			menuPatinete();
+
+			// Volvemos al menu principal
+			GestionSistema.menu();
 
 			// Si el usuario introduce una opción no válida
 		} else {
@@ -218,8 +222,12 @@ public class GestionPatinete {
 				String query = "UPDATE " + nombreBBDD + ".patinete SET Disponible = false, DniUsuario = '" + dniUsuario
 						+ "' where NumeroSerie = '" + numeroSerie + "'";
 
+				String query1 = "UPDATE " + nombreBBDD + ".cliente SET NumeroSeriePatinete = '" + numeroSerie
+						+ "' where Dni = '" + dniUsuario + "'";
+
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
+				stmt.executeUpdate(query1);
 
 				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
@@ -230,15 +238,18 @@ public class GestionPatinete {
 				// Mensaje que confirma la ejecución de la consulta
 				System.out.println();
 				System.out.println("El alquiler ha sido realizado con éxito.");
-				System.out.println("El patinete " + numeroSerie + ", ha sido alquilado al usuario " + dniUsuario
-						+ " durante " + diff + " días.");
+				System.out.println("El patinete " + numeroSerie + ", ha sido alquilado al cliente con DNI: "
+						+ dniUsuario + ", durante " + diff + " día/s.");
 
 				// Cerramos la conexión
 				stmt.close();
 
+				// Volvemos al menu principal
+				GestionSistema.menu();
+
 				// Llama al método que captura excepciones SQL
 			} catch (SQLException e) {
-				printSQLException(e);
+				Utilidades.printSQLException(e);
 			}
 
 			// Si el usuario desea volver al menú
@@ -246,8 +257,9 @@ public class GestionPatinete {
 			// Mensaje que informa que no se ha realizado la ejecución de la consulta
 			System.out.println();
 			System.out.println("Alquiler no realizado.");
-			// Vuelve al menú de patinete
-			menuPatinete();
+
+			// Volvemos al menu principal
+			GestionSistema.menu();
 
 			// Si el usuario introduce una opción no válida
 		} else {
@@ -303,8 +315,12 @@ public class GestionPatinete {
 						+ ".patinete SET Disponible = true, DniUsuario = '', KmRecorridos = (KmRecorridos + " + kmViaje
 						+ ") where NumeroSerie = '" + numeroSerie + "'";
 
+				String query1 = "UPDATE " + nombreBBDD + ".cliente SET NumeroSeriePatinete = '' where Dni = '"
+						+ dniUsuario + "'";
+
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
+				stmt.executeUpdate(query1);
 
 				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
@@ -315,22 +331,27 @@ public class GestionPatinete {
 				// Mensaje que confirma la ejecución de la consulta
 				System.out.println();
 				System.out.println("La devolución ha sido realizada con éxito.");
-				System.out.println("El patinete " + numeroSerie + ", ha sido devuelto por el usuario " + dniUsuario
-						+ ". Ha tenido el patinete en alquiler durante " + diff + " días.");
+				System.out.println("El patinete " + numeroSerie + ", ha sido devuelto por el cliente con DNI: "
+						+ dniUsuario + ". Ha tenido el patinete en alquiler durante " + diff + " días.");
 
 				// Cerramos la conexión
 				stmt.close();
 
+				// Volvemos al menu principal
+				GestionSistema.menu();
+
 				// Llama al método que captura excepciones SQL
 			} catch (SQLException e) {
-				printSQLException(e);
+				Utilidades.printSQLException(e);
 			}
 
 			// Si el usuario desea volver al menú
 		} else if (respuesta.equals("M")) {
 			System.out.println();
 			System.out.println("Alquiler no realizado.");
-			menuPatinete();
+
+			// Volvemos al menu principal
+			GestionSistema.menu();
 
 			// Si el usuario introduce una opción no válida
 		} else {
@@ -386,14 +407,14 @@ public class GestionPatinete {
 				String numeroDniUsuario = rs.getString(7);
 				// Comprueba que la variable numeroDniUsuario no sea null ni un String vacío
 				if (numeroDniUsuario != null && !numeroDniUsuario.trim().isEmpty()) {
-					result += "DNI del usuario que tiene el patinete alquilado: " + numeroDniUsuario + "\n";
+					result += "Alquilado por el usuario con DNI: " + numeroDniUsuario + "\n";
 				}
 				result += "*************************************" + "\n";
 			}
 
 			// Llama al método que captura excepciones SQL
 		} catch (SQLException e) {
-			printSQLException(e);
+			Utilidades.printSQLException(e);
 		}
 
 		return result;
@@ -420,8 +441,9 @@ public class GestionPatinete {
 
 		// Si el usuario desea volver al menú
 		if (respuesta.equals("M")) {
-			// Vuelve al menú de patinete
-			menuPatinete();
+
+			// Volvemos al menu principal
+			GestionSistema.menu();
 
 		} else {
 			System.out.println("La opción introducida no es válida");
@@ -478,13 +500,13 @@ public class GestionPatinete {
 
 				// Comprueba que la variable numeroDniUsuario no sea null ni un String vacío
 				if (numeroDniUsuario != null && !numeroDniUsuario.trim().isEmpty()) {
-					result += "DNI del usuario que tiene el patinete alquilado: " + numeroDniUsuario + "\n";
+					result += "Alquilado por el usuario con DNI: " + numeroDniUsuario + "\n";
 				}
 				result += "*************************************" + "\n";
 			}
 			// Llama al método que captura excepciones SQL
 		} catch (SQLException e) {
-			printSQLException(e);
+			Utilidades.printSQLException(e);
 		}
 
 		return result;
@@ -509,12 +531,14 @@ public class GestionPatinete {
 		String respuesta = teclado.nextLine().toUpperCase();
 		// Si el usuario desea volver al menú
 		if (respuesta.equals("M")) {
-			// Vuelve al menú de patinete
-			menuPatinete();
+
+			// Volvemos al menu principal
+			GestionSistema.menu();
 
 		} else {
 			System.out.println("La opción introducida no es válida");
-			// Vuelve al menú de patinete
+
+			// Volvemos al menu de patinete
 			menuPatinete();
 		}
 		// Cerramos el teclado
@@ -554,6 +578,7 @@ public class GestionPatinete {
 			buffer.write(listado);
 
 			// Mensaje informativo
+			System.out.println();
 			System.out.println("El listado de patinetes alquilados ha sido exportado con éxito.");
 
 			// Cierre del stream
@@ -562,6 +587,7 @@ public class GestionPatinete {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		GestionSistema.menu();
 	}
 
 	// Método para guardar el listado de patinetes en un fichero
@@ -595,6 +621,7 @@ public class GestionPatinete {
 			buffer.write(listado);
 
 			// Mensaje informativo
+			System.out.println();
 			System.out.println("El listado de patinetes ha sido exportado con éxito.");
 
 			// Cierre del stream
@@ -603,22 +630,7 @@ public class GestionPatinete {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		GestionSistema.menu();
 	}
 
-	// Método para capturar excepciones de SQL
-	private static void printSQLException(SQLException ex) {
-
-		ex.printStackTrace(System.err);
-		System.err.println("SQLState: " + ex.getSQLState());
-		System.err.println("Error Code: " + ex.getErrorCode());
-		System.err.println("Message: " + ex.getMessage());
-
-		Throwable t = ex.getCause();
-
-		while (t != null) {
-			System.out.println("Cause: " + t);
-			t = t.getCause();
-		}
-
-	}
 }
