@@ -10,7 +10,7 @@ import java.sql.*;
 public class GestionEmpleado {
 
 	
-	// Menú que muestra las opciones para trabajar con los empleados
+	// Menï¿½ que muestra las opciones para trabajar con los empleados
 	public static void menuEmpleados() {
 		
 		
@@ -28,14 +28,30 @@ public class GestionEmpleado {
 			System.out.println("");
 			System.out.println("GESTIONAR EMPLEADOS");
 			System.out.println("");
-			System.out.println("   1. Añadir nuevo empleado");
+			System.out.println("   1. Aï¿½adir nuevo empleado");
 			System.out.println("");
 			System.out.println("   2. Exportar listado de empleados a fichero.txt");
 			System.out.println("");
 			System.out.println("");
+			System.out.println(        
+			       " 	 .-:::----:::-.   \n"   
+			      +"  `:/-`     ``    `-/:` \n"   
+			      +" -/`      :+oooo/-    `/- \n"   
+			     +" /:      :oooooooo/     :/  \n" 
+			    +" ::      :oooooooo/      :: \n" 
+			    +" o`      -oooooooo-      `o  \n"
+			    +"`+       -oooooooo-       +` \n"
+			    +" o`       -oooooo-       `o  \n"
+			    + " ::        :oooo:        ::  \n"
+			     + "  /:      .+oooo+.      :/  \n" 
+			      + "  -/..:/+oooooooo+/:../-   \n" 
+			       +"    `:+oooooooooooooo+:`    \n" 
+			         + "       .-/+oooooo+/-.      " ); 
+			System.out.println("");
+			System.out.println("");
 			System.out.println("M. Volver al menu");
 			System.out.println("");
-			System.out.print("Introduzca una operación: ");
+			System.out.print("Introduzca una operaciï¿½n: ");
 			String opc = sc.nextLine().toUpperCase();
 			
 			switch(opc) {
@@ -54,7 +70,7 @@ public class GestionEmpleado {
 				
 			default:
 				System.out.println("");
-				System.out.println("¡ERROR! Debes introducir una opción disponible.");
+				System.out.println("ï¿½ERROR! Debes introducir una opciï¿½n disponible.");
 				menuEmpleados();
 				break;
 			}
@@ -76,7 +92,7 @@ public class GestionEmpleado {
 		
 		// Solicitud de datos al usuario
 		System.out.println("");
-		System.out.println("AÑADIR EMPLEADO");
+		System.out.println("Aï¿½ADIR EMPLEADO");
 		System.out.println("");
 		System.out.println("  Introduzca los siguientes datos:");
 		System.out.println("");
@@ -93,8 +109,8 @@ public class GestionEmpleado {
 		String email = sc.nextLine();
 		System.out.print("      Nombre de usuario: ");
 		String nUsuario = sc.nextLine();
-		System.out.print("      Contraseña: ");
-		String contraseña = sc.nextLine();
+		System.out.print("      contrasena: ");
+		String contrasena = sc.nextLine();
 		System.out.println("");
 		System.out.println("    ===============================");
 		System.out.println("    Nombre: " + nombre);
@@ -103,15 +119,31 @@ public class GestionEmpleado {
 		System.out.println("    DNI: " + dni);
 		System.out.println("    E-mail: " + email);
 		System.out.println("    Nombre de usuario: " + nUsuario);
-		System.out.println("    Contraseña: " + contraseña);
+		System.out.println("    contrasena: " + contrasena);
 		System.out.println("    ===============================");
 		System.out.println("");
 		
 		boolean bucle = true;
-		
-		// Bucle do-while para controlar la respuesta del usuario
+
+		System.out.println();
+		System.out.println();
+		System.out.println(        
+			       " 	 .-:::----:::-.   \n"   
+			      +"  `:/-`     ``    `-/:` \n"   
+			      +" -/`      :+oooo/-    `/- \n"   
+			     +" /:      :oooooooo/     :/  \n" 
+			    +" ::      :oooooooo/      :: \n" 
+			    +" o`      -oooooooo-      `o  \n"
+			    +"`+       -oooooooo-       +` \n"
+			    +" o`       -oooooo-       `o  \n"
+			    + " ::        :oooo:        ::  \n"
+			     + "  /:      .+oooo+.      :/  \n" 
+			      + "  -/..:/+oooooooo+/:../-   \n" 
+			       +"    `:+oooooooooooooo+:`    \n" 
+			         + "       .-/+oooooo+/-.      " ); 
+//Bucle do-while para controlar la respuesta del usuario
 		do {
-		System.out.print("R. Registrar Cliente / M. Volver al menú: ");
+		System.out.print("R. Registrar Cliente / M. Volver al menï¿½: ");
 		String respuesta = sc.nextLine().toUpperCase();
 		
 		switch(respuesta) {
@@ -126,7 +158,7 @@ public class GestionEmpleado {
 
 				// Variable que almacena la consulta a la BBDD
 				String query = "INSERT INTO " + nombreBBDD + ".empleado VALUES ('" + nombre + "', '" + apellidos
-						+ "'," + edad + ", '" + dni + "', '" + email + "', '" + nUsuario + "', '" + contraseña + "')";
+						+ "'," + edad + ", '" + dni + "', '" + email + "', '" + nUsuario + "', '" + contrasena + "')";
 
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
@@ -153,18 +185,18 @@ public class GestionEmpleado {
 		
 		default:
 			System.out.println("");
-			System.out.println("¡ERROR! Debe introducir una de las opciones disponibles (R-M)");
+			System.out.println("ï¿½ERROR! Debe introducir una de las opciones disponibles (R-M)");
 			System.out.println("");
 		}
 		}while(bucle == true);
 		
 	}
 	
-	// Método para exportar fichero con el listado de todos los empleados
+	// Mï¿½todo para exportar fichero con el listado de todos los empleados
 	public static void exportarFicheroEmmpleados(Connection conexion, String nombreBBDD) throws SQLException{
 		
 		Statement stmt = null;
-		String query = "select Nombre, Apellidos, Edad, Dni, Email, NombreUsuario, Contraseña from " + nombreBBDD + ".empleado";
+		String query = "select Nombre, Apellidos, Edad, Dni, Email, NombreUsuario, contrasena from " + nombreBBDD + ".empleado";
 
 		try {
 
@@ -193,14 +225,14 @@ public class GestionEmpleado {
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));
 					String nombre = rs.getString(1);
-					System.out.println("Número interno: " + nombre);
+					System.out.println("Nï¿½mero interno: " + nombre);
 					wt.write("Nombre: " + nombre + ("\n"));
 					String apellidos = rs.getString(2);
 					System.out.println("Apellidos: " + apellidos);
 					wt.write("Apellidos: " + apellidos + ("\n"));
 					int edad = rs.getInt(3);
-					System.out.println("Edad: " + edad + " años");
-					wt.write("Edad: " + edad + " años" + ("\n"));
+					System.out.println("Edad: " + edad + " aï¿½os");
+					wt.write("Edad: " + edad + " aï¿½os" + ("\n"));
 					String dni = rs.getString(4);
 					System.out.println("DNI: " + dni);
 					wt.write("DNI: " + dni + ("\n"));
@@ -210,9 +242,9 @@ public class GestionEmpleado {
 					String nUsuario = rs.getString(6);
 					System.out.println("Nombre de usuario: " + nUsuario);
 					wt.write("Nombre de usuario: " + nUsuario + ("\n"));
-					String contraseña = rs.getString(7);
-					System.out.println("Contraseña: " + contraseña);
-					wt.write("Contraseña: " + contraseña + ("\n"));
+					String contrasena = rs.getString(7);
+					System.out.println("contrasena: " + contrasena);
+					wt.write("contrasena: " + contrasena + ("\n"));
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));
 					System.out.println("");
@@ -224,7 +256,7 @@ public class GestionEmpleado {
 			
 			// Controlamos las excepciones
 			} catch (IOException e) {
-				System.out.println("¡ERROR!");
+				System.out.println("ï¿½ERROR!");
 				e.printStackTrace();
 			}
 

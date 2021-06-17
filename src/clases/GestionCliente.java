@@ -37,6 +37,21 @@ public class GestionCliente {
 		System.out.println("4. Exportar listado de clientes a fichero.txt");
 		System.out.println();
 		System.out.println();
+		System.out.println(
+				"`````````````..`````````````\n"
+				+"`````````.smMMMMms-`````````\n"
+				+"````````:NMhhdmNNMM:````````\n"
+				+"````````yh:```````yy````````\n"
+				+"````````os````````oo````````\n"
+				+"`````````h+``````/d`````````\n"
+				+"``````````oy+::+yo``````````\n"
+				+"```````:+ss+////+ss+:```````\n"
+				+"````:hMMMMMMMMMMMMMMMMh:````\n"
+				+"```oMMMMMMMMMMMMMMMMMMMMs```\n"
+				+"``.MMMMMMMMMMMMMMMMMMMMMM-``\n"
+				+"``-MMMMMMMMMMMMMMMMMMMMMM:``");
+		System.out.println();
+		System.out.println();
 		System.out.println("M - Volver al menu");
 		System.out.println();
 		System.out.print("Introduzca su eleccion: ");
