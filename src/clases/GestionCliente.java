@@ -31,7 +31,7 @@ public class GestionCliente {
 		System.out.println("GESTIONAR CLIENTES");
 		System.out.println();
 		System.out.println("Selecciona una operacion:");
-		System.out.println("1. Añadir nuevo cliente");
+		System.out.println("1. Anyadir nuevo cliente");
 		System.out.println("2. Consultar cliente");
 		System.out.println("3. Listar clientes");
 		System.out.println("4. Exportar listado de clientes a fichero.txt");
@@ -74,6 +74,7 @@ public class GestionCliente {
 			GestionSistema.menu();
 			break;
 		default:
+			System.out.println();
 			System.out.println("Opcion no disponible");
 			menuClientes();
 			break;
@@ -373,6 +374,7 @@ public class GestionCliente {
 			buffer.write(listado);
 
 			// Mensaje informativo
+			System.out.println();
 			System.out.println("El listado de clientes ha sido exportado con exito.");
 			System.out.println();
 

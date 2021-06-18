@@ -39,16 +39,16 @@ public class GestionEmpleado {
 			System.out.println("");
 			System.out.println("");
 			System.out.println(
-				    "```` ` `````` `.odNMMNdo.````  `````````\n"
-				   +"```````  `` ``+NMMMMMMMMN+``````````````\n"
-				   +"`````````````.MMMMMMMMMMMM-`````````````\n"
-			       +"`````````````.MMMMMMMMMMMM-`````````````\n"
-				   +"``````````````+MMMMMMMMMM+``````````````\n"
-				   +"```````````````.sdNMMNds-```````````````\n"
-				   +"````````````````````````````````````````\n"
-				   +"`````````.odNMm.`-smms-`.mMNdo.```````` \n"
+				    "```` ` `````` `.odNMMNdo.````  ````````\n"
+				   +"```````  `` ``+NMMMMMMMMN+`````````````\n"
+				   +"`````````````.MMMMMMMMMMMM-````````````\n"
+			       +"`````````````.MMMMMMMMMMMM-````````````\n"
+				   +"``````````````+MMMMMMMMMM+`````````````\n"
+				   +"```````````````.sdNMMNds-``````````````\n"
+				   +"```````````````````````````````````````\n"
+				   +"`````````.odNMm.`-smms-`.mMNdo.````````\n"
 				   +"`````` -NMMMMMm.`+mm+`.dMMMMMN-````````\n"
-				   +"```````sMMMMMMMd``dm``dMMMMMMMs``````` \n"
+				   +"```````sMMMMMMMd``dm``dMMMMMMMs````````\n"
 				   +"```````sMMMMMMMMh/MM/yMMMMMMMMy````````\n"
 				   +"````` `sMMMMMMMMMMMMMMMMMMMMMMy````````\n"
 				   +"```````-dMMMMMMMMMMMMMMMMMMMMd-````````");	        
@@ -114,22 +114,9 @@ public class GestionEmpleado {
 		String email = sc.nextLine();
 		System.out.print("      Nombre de usuario: ");
 		String nUsuario = sc.nextLine();
-		System.out.print("      contrasena: ");
-		String contrasena = sc.nextLine();
+		System.out.print("      Contrasenya: ");
+		String contrasenya = sc.nextLine();
 		System.out.println("");
-		System.out.println("    ===============================");
-		System.out.println("    Nombre: " + nombre);
-		System.out.println("    Apellidos: " + apellidos);
-		System.out.println("    Edad: " + edad);
-		System.out.println("    DNI: " + dni);
-		System.out.println("    E-mail: " + email);
-		System.out.println("    Nombre de usuario: " + nUsuario);
-		System.out.println("    Contrasena: " + contrasena);
-		System.out.println("    ===============================");
-		System.out.println("");
-		
-		boolean bucle = true;
-
 		System.out.println("");
 		System.out.println("");
 		System.out.println(        
@@ -149,7 +136,19 @@ public class GestionEmpleado {
 		
 		System.out.println("");
 		System.out.println("");
+		System.out.println("    ===============================");
+		System.out.println("    Nombre: " + nombre);
+		System.out.println("    Apellidos: " + apellidos);
+		System.out.println("    Edad: " + edad);
+		System.out.println("    DNI: " + dni);
+		System.out.println("    E-mail: " + email);
+		System.out.println("    Nombre de usuario: " + nUsuario);
+		System.out.println("    Contrasenya: " + contrasenya);
+		System.out.println("    ===============================");
+		System.out.println("");
 		
+		boolean bucle = true;
+
 		//Bucle do-while para controlar la respuesta del usuario
 		do {
 		System.out.print("R. Registrar Cliente / M. Volver al menu: ");
@@ -167,7 +166,7 @@ public class GestionEmpleado {
 
 				// Variable que almacena la consulta a la BBDD
 				String query = "INSERT INTO " + nombreBBDD + ".empleado VALUES ('" + nombre + "', '" + apellidos
-						+ "'," + edad + ", '" + dni + "', '" + email + "', '" + nUsuario + "', '" + contrasena + "')";
+						+ "'," + edad + ", '" + dni + "', '" + email + "', '" + nUsuario + "', '" + contrasenya + "')";
 
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
@@ -205,7 +204,7 @@ public class GestionEmpleado {
 	public static void exportarFicheroEmmpleados(Connection conexion, String nombreBBDD) throws SQLException{
 		
 		Statement stmt = null;
-		String query = "select Nombre, Apellidos, Edad, Dni, Email, NombreUsuario, contrasena from " + nombreBBDD + ".empleado";
+		String query = "select Nombre, Apellidos, Edad, Dni, Email, NombreUsuario, Contrasenya from " + nombreBBDD + ".empleado";
 
 		try {
 
@@ -251,9 +250,9 @@ public class GestionEmpleado {
 					String nUsuario = rs.getString(6);
 					System.out.println("Nombre de usuario: " + nUsuario);
 					wt.write("Nombre de usuario: " + nUsuario + ("\n"));
-					String contrasena = rs.getString(7);
-					System.out.println("contrasena: " + contrasena);
-					wt.write("contrasena: " + contrasena + ("\n"));
+					String contrasenya = rs.getString(7);
+					System.out.println("Contrasenya: " + contrasenya);
+					wt.write("Contrasenya: " + contrasenya + ("\n"));
 					System.out.println("====================================");
 					wt.write("====================================" + ("\n"));
 					System.out.println("");

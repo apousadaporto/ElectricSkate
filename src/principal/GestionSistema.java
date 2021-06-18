@@ -46,6 +46,8 @@ public class GestionSistema {
 			System.out.println("");
 			System.out.println("C. Cerrar sesion");
 			System.out.println("");
+			System.out.println("S. Salir del programa");
+			System.out.println("");
 
 			// Pedimos al usuario que introduzca una opcion y la almacenamos en un String
 			System.out.print("Introduzca una operacion: ");
@@ -70,9 +72,15 @@ public class GestionSistema {
 			case "C":
 				System.out.println("");
 				System.out.println("Cerrando sesion...");
-				login();
+				System.exit(0);
 				break;
 
+			case "S":
+				System.out.println("");
+				System.out.println("Saliendo del programa...");
+				System.exit(0);
+				break;
+				
 			default:
 				System.out.println("");
 				System.out.println("ERROR! Debes introducir una opcion valida.");

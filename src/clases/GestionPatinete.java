@@ -103,6 +103,7 @@ public class GestionPatinete {
 			GestionSistema.menu();
 
 		default:
+			System.out.println();
 			System.out.println("Por favor, seleccione una de las opciones disponibles.");
 			// Vuelve al menu de patinete
 			menuPatinete();
@@ -154,8 +155,7 @@ public class GestionPatinete {
 
 				// Variable que almacena la consulta a la BBDD
 				String query = "INSERT INTO " + nombreBBDD + ".patinete VALUES " + "('" + marca + "','" + modelo + "','"
-						+ color + "'," + kmRecorridos + ",'" + numeroSerie + "'," + disponible + ", " + kmViaje
-						+ ", NULL)";
+						+ color + "'," + kmRecorridos + ",'" + numeroSerie + "'," + disponible + ", NULL)";
 
 				// Ejecutamos la consulta
 				stmt.executeUpdate(query);
@@ -243,7 +243,7 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
+				// Transformamos las fechas introducidas por teclado a LocalDate, para poder calcular la diferencia de días entre ellas
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
 				// Calcula la diferencia en dias entre las fechas introducidas
@@ -336,7 +336,7 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// https://www.delftstack.com/es/howto/java/java-subtract-dates/
+				// Transformamos las fechas introducidas por teclado a LocalDate, para poder calcular la diferencia de días entre ellas
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
 				// Calcula la diferencia en dias entre las fechas introducidas
@@ -362,7 +362,7 @@ public class GestionPatinete {
 			// Si el usuario desea volver al menu
 		} else if (respuesta.equals("M")) {
 			System.out.println();
-			System.out.println("Alquiler no realizado.");
+			System.out.println("Devolucion no realizada.");
 
 			// Volvemos al menu principal
 			GestionSistema.menu();
