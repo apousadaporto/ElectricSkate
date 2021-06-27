@@ -10,8 +10,10 @@ import java.sql.DriverManager;
 
 import java.util.Scanner;
 
+import clases.Empleado;
 import clases.GestionCliente;
 import clases.GestionPatinete;
+import clases.Utilidades;
 import clases.GestionEmpleado;
 
 public class GestionSistema {
@@ -35,7 +37,7 @@ public class GestionSistema {
 			System.out.println("****************   ElectricSkate    ***************");
 			System.out.println("***************************************************");
 			System.out.println("");
-			System.out.println("Bienvenido/a!");
+			System.out.println("¡Bienvenido/a " + Utilidades.nombreUsuario + "!");
 			System.out.println("");
 			System.out.println("   1. Gestionar clientes");
 			System.out.println("");
@@ -80,7 +82,7 @@ public class GestionSistema {
 				System.out.println("Saliendo del programa...");
 				System.exit(0);
 				break;
-				
+
 			default:
 				System.out.println("");
 				System.out.println("ERROR! Debes introducir una opcion valida.");
@@ -142,19 +144,19 @@ public class GestionSistema {
 		do {
 			System.out.println("");
 			System.out.println("");
-			System.out.println("INICIA SESION");
+			System.out.println("INICIAR SESION");
 			System.out.println("");
 
 			// Pedimos usuario y contrasena al usuario
 			System.out.print("Introduzca su usuario: ");
-			String usuario = sc2.next();
+			Utilidades.nombreUsuario = sc2.next();
 			System.out.println("");
 			System.out.print("Introduzca su contrasena: ");
 			String passwd = sc2.next();
 			System.out.println("");
 
 			// Si los datos coinciden, llamamos al metodo menu()
-			if (usuario.equals(u) && passwd.equals(c)) {
+			if (Utilidades.nombreUsuario.equals(u) && passwd.equals(c)) {
 				System.out.println("");
 				System.out.println("INICIANDO SESION...");
 				menu();

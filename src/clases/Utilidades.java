@@ -21,6 +21,9 @@ public class Utilidades {
 	// Constante que almacena la password de acceso a la base de datos
 	public static final String PASSWD_BBDD = "";
 
+	// Constante que almacena el nombre de usuario
+	public static String nombreUsuario;
+
 	// Metodo que controla las posibles excepciones SQL
 	public static void printSQLException(SQLException ex) {
 
