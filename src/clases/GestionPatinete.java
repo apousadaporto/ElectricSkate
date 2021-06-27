@@ -47,19 +47,10 @@ public class GestionPatinete {
 		System.out.println("7. Exportar listado de patinetes totales a fichero.txt");
 		System.out.println();
 		System.out.println();
-		System.out.println(           
-			    " 	.+o+.               \n" 
-			    +"       `-:/o-             \n"     
-	            +"        `/:/-            \n"     
-	            +"      -/:+o+           \n"     
-	            +"   ``-::/+so            \n"    
-	            +"   /```:++o`            \n"    
-	            +"   +   syss`            \n"    
-	            +"   /  +y::s+`           \n"    
-	            +" -. .s/  -/..``          \n"  
-	            +"  +   --      `:         \n"   
-	            +".oyy-`::``````.           \n"  
-	            +"-yhy:/://///:oh.      	");
+		System.out.println(" 	.+o+.               \n" + "       `-:/o-             \n" + "        `/:/-            \n"
+				+ "      -/:+o+           \n" + "   ``-::/+so            \n" + "   /```:++o`            \n"
+				+ "   +   syss`            \n" + "   /  +y::s+`           \n" + " -. .s/  -/..``          \n"
+				+ "  +   --      `:         \n" + ".oyy-`::``````.           \n" + "-yhy:/://///:oh.      	");
 		System.out.println();
 		System.out.println("M - Volver al menu.");
 		System.out.println("");
@@ -86,7 +77,7 @@ public class GestionPatinete {
 
 		case "5":
 			String listadoPatinetesAlquilados = obtenerPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD);
-			exportarListadoPatinetesAlquilados(listadoPatinetesAlquilados);
+			exportarListadoPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD,listadoPatinetesAlquilados);
 			break;
 
 		case "6":
@@ -95,9 +86,9 @@ public class GestionPatinete {
 
 		case "7":
 			String listadoPatinetes = obtenerPatinetes(conexion, Utilidades.NOMBRE_BBDD);
-			exportarListadoPatinetes(listadoPatinetes);
+			exportarListadoPatinetes(conexion, Utilidades.NOMBRE_BBDD,listadoPatinetes);
 			break;
-			
+
 		case "M":
 			// Volvemos al menu principal
 			GestionSistema.menu();
@@ -122,7 +113,6 @@ public class GestionPatinete {
 
 		int kmRecorridos = 0;
 		boolean disponible = true;
-		int kmViaje = 0;
 
 		// Recogida de datos introducidos por el usuario
 		System.out.println();
@@ -202,7 +192,7 @@ public class GestionPatinete {
 
 		// Instanciamos el teclado para pedir datos al usuario
 		Scanner teclado = new Scanner(System.in);
-
+		
 		// Recogida de datos introducidos por el usuario
 		System.out.println();
 		System.out.println("ALQUILAR PATINETE");
@@ -243,7 +233,8 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// Transformamos las fechas introducidas por teclado a LocalDate, para poder calcular la diferencia de días entre ellas
+				// Transformamos las fechas introducidas por teclado a LocalDate, para poder
+				// calcular la diferencia de dias entre ellas
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
 				// Calcula la diferencia en dias entre las fechas introducidas
@@ -303,19 +294,23 @@ public class GestionPatinete {
 		System.out.print("Dni usuario: ");
 		String dniUsuario = teclado.nextLine();
 		System.out.print("Km viaje: ");
-		int kmViaje = teclado.nextInt();
-		teclado.nextLine();
+		String kmViaje = teclado.nextLine();
 		System.out.print("Fecha del alquiler (AAAA-MM-DD): ");
 		String fechaA = teclado.nextLine();
 		System.out.print("Fecha de devolucion (AAAA-MM-DD): ");
 		String fechaD = teclado.nextLine();
+		// Confirmamos que el campo "kmViaje" sea correcto
+		if (!Utilidades.esEntero(kmViaje)) {
+			System.out.println();
+			System.out.println("El campo \"Km viaje\" tiene que ser un numero entero.");
+			devolverPatinete(conexion, Utilidades.NOMBRE_BBDD);
+		}
 		System.out.println();
 		System.out.print("R - Registrar devolucion o M - Volver al menu: ");
 		String respuesta = teclado.nextLine().toUpperCase();
 		System.out.println();
-
 		// Si el usuario desea registrar la devolucion del patinete
-		if (respuesta.equals("R")) {
+		if (respuesta.equals("R") && existePatinete(conexion, nombreBBDD, numeroSerie)) {
 
 			// Objeto Statement que establece la conexion
 			Statement stmt = null;
@@ -336,7 +331,8 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// Transformamos las fechas introducidas por teclado a LocalDate, para poder calcular la diferencia de días entre ellas
+				// Transformamos las fechas introducidas por teclado a LocalDate, para poder
+				// calcular la diferencia de dias entre ellas
 				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
 				// Calcula la diferencia en dias entre las fechas introducidas
@@ -353,7 +349,7 @@ public class GestionPatinete {
 
 				// Volvemos al menu principal
 				GestionSistema.menu();
-
+ 
 				// Llama al metodo que captura excepciones SQL
 			} catch (SQLException e) {
 				Utilidades.printSQLException(e);
@@ -371,7 +367,7 @@ public class GestionPatinete {
 		} else {
 			// Mensaje que informa que no se ha realizado la ejecucion de la consulta
 			System.out.println();
-			System.out.println("La opcion introducida no es valida");
+			System.out.println("Numero de serie del patinete no encontrado en la base de datos");
 			// Vuelve al menu de patinete
 			menuPatinete();
 		}
@@ -432,7 +428,7 @@ public class GestionPatinete {
 
 		return result;
 	}
-
+	
 	// Metodo que devuelve el listado de patinetes alquilados
 	private static String listarPatinetesAlquilados(Connection conexion, String nombreBBDD) {
 
@@ -469,6 +465,44 @@ public class GestionPatinete {
 
 		return result;
 	}
+	
+	// Metodo para obtener el listado de patinetes alquilados
+		private static String listarPatinetesDisponibles(Connection conexion, String nombreBBDD) {
+			
+			// Variable que almacena el resultado de las consultas
+			String result = "\nPatinetes disponibles: \n";
+
+			// Objeto de tipo Statement para establecer la conexion
+			Statement stmt = null;
+
+			// Variable para realizar la consulta
+			String query = "select * " + "from " + nombreBBDD + ".patinete " + "where Disponible = true ";
+
+			try {
+
+				// Objeto de tipo Statement para establecer la conexion
+				stmt = conexion.createStatement();
+
+				// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto
+				// stmt y su metodo en el cual le pasamos por parametro la variable local
+				ResultSet rs = stmt.executeQuery(query);
+
+				// Mientras rs siga recibiendo informacion almacena el resultado en la variable
+				while (rs.next()) {
+			
+					String numeroSerie = rs.getString(5);
+					result += "Numero de serie: " + numeroSerie + "\n";
+
+					}
+	
+				// Llama al metodo que captura excepciones SQL
+			} catch (SQLException e) {
+				Utilidades.printSQLException(e);
+			}
+
+			return result;
+		}
+
 
 	// Metodo para obtener el listado de todos los patinetes
 	private static String obtenerPatinetes(Connection conexion, String nombreBBDD) {
@@ -534,7 +568,7 @@ public class GestionPatinete {
 		System.out.println("CONSULTAR PATINETES TOTALES");
 		System.out.println();
 
-		// Llama al metodo que almacena la informaciï¿½n de todos los patinetes
+		// Llama al metodo que almacena la informacion de todos los patinetes
 		String result = obtenerPatinetes(conexion, nombreBBDD);
 		// Muestra por pantalla todo los patinetes
 		System.out.println(result);
@@ -560,9 +594,12 @@ public class GestionPatinete {
 	}
 
 	// Metodo para guardar el listado de patinetes alquilados en un fichero
-	private static void exportarListadoPatinetesAlquilados(String listado) {
+	private static void exportarListadoPatinetesAlquilados(Connection conexion, String nombreBBDD,String listado) {
 
 		try {
+			
+			String result = obtenerPatinetesAlquilados(conexion, nombreBBDD);
+			System.out.println(result);
 
 			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
@@ -603,9 +640,13 @@ public class GestionPatinete {
 	}
 
 	// Metodo para guardar el listado de patinetes en un fichero
-	private static void exportarListadoPatinetes(String listado) {
+	private static void exportarListadoPatinetes(Connection conexion, String nombreBBDD,String listado) {
 
 		try {
+			
+			//String result = obtenerPatinetes(conexion, nombreBBDD);
+
+			//System.out.println(result);
 
 			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
@@ -643,6 +684,38 @@ public class GestionPatinete {
 			e.printStackTrace();
 		}
 		GestionSistema.menu();
+	}
+
+	// Metodo que comprueba que haya un patinete registrado con el numero de serie que nos pasan
+	// por parametro
+	private static boolean existePatinete(Connection conexion, String nombreBBDD, String numeroSerie) {
+
+		// Variable que almacena la consulta a la base de datos
+		String compruebaPatinete = "select 1 " + "from " + nombreBBDD + ".patinete" + " where NumeroSerie = '" + numeroSerie + "'";
+
+		// Objeto de tipo Statement para establecer la conexion
+		Statement stmt = null;
+
+		try {
+			// Creamos la consulta a la BBDD
+			stmt = conexion.createStatement();
+
+			// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto stmt
+			// y su metodo en el cual le pasamos por parametro la variable local
+			ResultSet rs = stmt.executeQuery(compruebaPatinete);
+
+			while (rs.next()) {
+				if (rs.getInt(1) == 1) {
+					return true;
+				}
+			}
+
+			// Llamada al metodo que controla las posibles excepciones SQL
+		} catch (SQLException e) {
+			Utilidades.printSQLException(e);
+		}
+
+		return false;
 	}
 
 }

@@ -16,12 +16,12 @@ public class GestionCliente {
 
 	// Menu que muestra las opciones para trabajar con los clientes
 	public static void menuClientes() {
-		
+
 		// Realizamos la conexion a la base de datos
-		Connection conexion = null;	
+		Connection conexion = null;
 		try {
 			conexion = DriverManager.getConnection(Utilidades.URL_BBDD, Utilidades.USER_BBDD, Utilidades.PASSWD_BBDD);
-		// Controlamos las posibles excepciones
+			// Controlamos las posibles excepciones
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,19 +37,11 @@ public class GestionCliente {
 		System.out.println("4. Exportar listado de clientes a fichero.txt");
 		System.out.println();
 		System.out.println();
-		System.out.println(
-				"`````````````..`````````````\n"
-				+"`````````.smMMMMms-`````````\n"
-				+"````````:NMhhdmNNMM:````````\n"
-				+"````````yh:```````yy````````\n"
-				+"````````os````````oo````````\n"
-				+"`````````h+``````/d`````````\n"
-				+"``````````oy+::+yo``````````\n"
-				+"```````:+ss+////+ss+:```````\n"
-				+"````:hMMMMMMMMMMMMMMMMh:````\n"
-				+"```oMMMMMMMMMMMMMMMMMMMMs```\n"
-				+"``.MMMMMMMMMMMMMMMMMMMMMM-``\n"
-				+"``-MMMMMMMMMMMMMMMMMMMMMM:``");
+		System.out.println("`````````````..`````````````\n" + "`````````.smMMMMms-`````````\n"
+				+ "````````:NMhhdmNNMM:````````\n" + "````````yh:```````yy````````\n" + "````````os````````oo````````\n"
+				+ "`````````h+``````/d`````````\n" + "``````````oy+::+yo``````````\n" + "```````:+ss+////+ss+:```````\n"
+				+ "````:hMMMMMMMMMMMMMMMMh:````\n" + "```oMMMMMMMMMMMMMMMMMMMMs```\n" + "``.MMMMMMMMMMMMMMMMMMMMMM-``\n"
+				+ "``-MMMMMMMMMMMMMMMMMMMMMM:``");
 		System.out.println();
 		System.out.println();
 		System.out.println("M - Volver al menu");
@@ -68,7 +60,7 @@ public class GestionCliente {
 			break;
 		case "4":
 			String listadoClientes = obtenerClientes(conexion, Utilidades.NOMBRE_BBDD);
-			exportarListadoClientes(listadoClientes);
+			exportarListadoClientes(conexion, Utilidades.NOMBRE_BBDD,listadoClientes);
 			break;
 		case "M":
 			GestionSistema.menu();
@@ -79,7 +71,7 @@ public class GestionCliente {
 			menuClientes();
 			break;
 		}
-		
+
 		teclado.close();
 	}
 
@@ -105,10 +97,10 @@ public class GestionCliente {
 		System.out.print("E-mail: ");
 		String email = teclado.nextLine();
 		// Confirmamos que el campo "edad" sea correcto
-		if (!esEntero(edad)) {
+		if (!Utilidades.esEntero(edad)) {
 			System.out.println();
 			System.out.println("El campo \"edad\" tiene que ser un numero entero.");
-			insertarCliente(conexion,Utilidades.NOMBRE_BBDD);
+			insertarCliente(conexion, Utilidades.NOMBRE_BBDD);
 		}
 		System.out.println("Nombre: " + nombre);
 		System.out.println("Apellidos: " + apellidos);
@@ -221,7 +213,7 @@ public class GestionCliente {
 					String numeroSeriePatinete = rs.getString(6);
 					// Comprueba que la variable numeroSeriePatinete no sea null ni un String vacio
 					if (numeroSeriePatinete != null && !numeroSeriePatinete.trim().isEmpty()) {
-					result += "Numero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
+						result += "Numero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
 
 					}
 					result += "*************************************" + "\n";
@@ -299,9 +291,9 @@ public class GestionCliente {
 				String numeroSeriePatinete = rs.getString(6);
 				// Comprueba que la variable numeroSeriePatinete no sea null ni un String vacio
 				if (numeroSeriePatinete != null && !numeroSeriePatinete.trim().isEmpty()) {
-				result += "Numero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
+					result += "Numero de serie del patinete alquilado: " + numeroSeriePatinete + "\n";
 				}
-				
+
 				result += "*************************************" + "\n";
 
 			}
@@ -313,40 +305,44 @@ public class GestionCliente {
 
 		return result;
 	}
-	
+
 	// Metodo que devuelve el listado de los clientes
-		private static String listarClientes(Connection conexion, String nombreBBDD) {
+	private static String listarClientes(Connection conexion, String nombreBBDD) {
 
-			Scanner teclado = new Scanner(System.in);
+		Scanner teclado = new Scanner(System.in);
 
-			System.out.println();
-			System.out.println("LISTAR CLIENTES");
-			System.out.println();
+		System.out.println();
+		System.out.println("LISTAR CLIENTES");
+		System.out.println();
 
+		String result = obtenerClientes(conexion, nombreBBDD);
+
+		System.out.println(result);
+
+		System.out.print("M - Volver al menu: ");
+		String respuesta = teclado.nextLine().toUpperCase();
+		if (respuesta.equals("M")) {
+			// Volvemos al menu
+			GestionSistema.menu();
+		} else {
+			// Si el usuario introduce un valor diferente a "M"
+			System.out.println("Opcion no valida");
+			menuClientes();
+		}
+
+		teclado.close();
+
+		return result;
+	}
+
+	// Metodo para guardar el listado de ordenadores en un fichero
+	private static void exportarListadoClientes(Connection conexion, String nombreBBDD, String listado) {
+
+		try {
+			
 			String result = obtenerClientes(conexion, nombreBBDD);
 
 			System.out.println(result);
-
-			System.out.print("M - Volver al menu: ");
-			String respuesta = teclado.nextLine().toUpperCase();
-			if (respuesta.equals("M")) {
-				// Volvemos al menu
-				GestionSistema.menu();
-			} else {
-				// Si el usuario introduce un valor diferente a "M"
-				System.out.println("Opcion no valida");
-				menuClientes();
-			}
-
-			teclado.close();
-
-			return result;
-		}
-
-	// Metodo para guardar el listado de ordenadores en un fichero
-	private static void exportarListadoClientes(String listado) {
-
-		try {
 
 			// Seleccionamos la ruta y la carpeta en la cual ira nuestro archivo
 			File ruta = new File("C:" + File.separator + "informes");
@@ -387,22 +383,9 @@ public class GestionCliente {
 		GestionSistema.menu();
 	}
 
-	// Metodo para asegurarnos que nos introduzcan un numero entero
-		private static boolean esEntero(String valor) {
-
-			// Convertirmos el String que nos pasen a int
-			try {
-				Integer.valueOf(valor);
-				// Controlamos las excepciones en caso de que el argumento sea un caracter o un
-				// texto
-			} catch (Exception ex) {
-				return false;
-			}
-			return true;
-		}
-	
-		// Metodo que comprueba que haya un cliente registrado con el dni que nos pasan por parametro 
-		private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
+	// Metodo que comprueba que haya un cliente registrado con el dni que nos pasan
+	// por parametro
+	private static boolean existeCliente(Connection conexion, String nombreBBDD, String dni) {
 
 		// Variable que almacena la consulta a la base de datos
 		String compruebaCliente = "select 1 " + "from " + nombreBBDD + ".cliente" + " WHERE Dni = '" + dni + "'";

@@ -14,7 +14,9 @@ public class Patinete {
 	private int kmRecorridos;
 	private String numeroSerie;
 	private boolean disponible;
+	
 	private int kmViaje;
+	
 	private String dniUsuario;
 
 	// Constructor
@@ -27,7 +29,6 @@ public class Patinete {
 		this.kmRecorridos = 0;
 		this.numeroSerie = numeroSerie;
 		this.disponible = disponible;
-		this.kmViaje = kmViaje;
 		this.dniUsuario = dniUsuario;
 	}
 
@@ -78,14 +79,6 @@ public class Patinete {
 
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
-	}
-
-	public int getKmViaje() {
-		return kmViaje;
-	}
-
-	public void setKmViaje(int kmViaje) {
-		this.kmViaje = kmViaje;
 	}
 
 	public String getDniUsuario() {

@@ -3,21 +3,21 @@ package clases;
 public class Cliente extends Usuario {
 
 	// Atributos
-	private Patinete patinete;
+
+	private String patinete;
 
 	// Constructor
-	public Cliente(String nombre, String apellidos, int edad, String dni, String email, Patinete patinete) {
+	public Cliente(String nombre, String apellidos, int edad, String dni, String email, String patinete) {
 		super(nombre, apellidos, edad, dni, email);
 		this.patinete = patinete;
 	}
 
 	// Getters y Setters
-	public Patinete getPatinete() {
+	public String getPatinete() {
 		return patinete;
 	}
 
-	public void setPatinete(Patinete patinete) {
+	public void setPatinete(String patinete) {
 		this.patinete = patinete;
 	}
-	
 }

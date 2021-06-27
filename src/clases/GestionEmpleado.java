@@ -33,9 +33,9 @@ public class GestionEmpleado {
 			System.out.println("");
 			System.out.println("GESTIONAR EMPLEADOS");
 			System.out.println("");
-			System.out.println("   1. Anyadir nuevo empleado");
+			System.out.println("1. Anyadir nuevo empleado");
 			System.out.println("");
-			System.out.println("   2. Exportar listado de empleados a fichero.txt");
+			System.out.println("2. Exportar listado de empleados a fichero.txt");
 			System.out.println("");
 			System.out.println("");
 			System.out.println(
@@ -99,22 +99,21 @@ public class GestionEmpleado {
 		System.out.println("");
 		System.out.println("ANYADIR EMPLEADO");
 		System.out.println("");
-		System.out.println("  Introduzca los siguientes datos:");
+		System.out.println("Introduzca los siguientes datos:");
 		System.out.println("");
-		System.out.print("      Nombre: ");
+		System.out.print("Nombre: ");
 		String nombre = sc.nextLine();
-		System.out.print("      Apellidos: ");
+		System.out.print("Apellidos: ");
 		String apellidos = sc.nextLine();
-		System.out.print("      Edad: ");
-		int edad = sc.nextInt();
-		sc.nextLine();
-		System.out.print("      DNI: ");
+		System.out.print("Edad: ");
+		String edad = sc.nextLine();
+		System.out.print("DNI: ");
 		String dni = sc.nextLine();
-		System.out.print("      E-mail: ");
+		System.out.print("E-mail: ");
 		String email = sc.nextLine();
-		System.out.print("      Nombre de usuario: ");
+		System.out.print("Nombre de usuario: ");
 		String nUsuario = sc.nextLine();
-		System.out.print("      Contrasenya: ");
+		System.out.print("Contrasenya: ");
 		String contrasenya = sc.nextLine();
 		System.out.println("");
 		System.out.println("");
@@ -136,22 +135,28 @@ public class GestionEmpleado {
 		
 		System.out.println("");
 		System.out.println("");
-		System.out.println("    ===============================");
-		System.out.println("    Nombre: " + nombre);
-		System.out.println("    Apellidos: " + apellidos);
-		System.out.println("    Edad: " + edad);
-		System.out.println("    DNI: " + dni);
-		System.out.println("    E-mail: " + email);
-		System.out.println("    Nombre de usuario: " + nUsuario);
-		System.out.println("    Contrasenya: " + contrasenya);
-		System.out.println("    ===============================");
+		// Confirmamos que el campo "edad" sea correcto
+		if (!Utilidades.esEntero(edad)) {
+		System.out.println();
+		System.out.println("El campo \"edad\" tiene que ser un numero entero.");
+				insertarEmpleado(conexion,Utilidades.NOMBRE_BBDD);
+				}
+		System.out.println("===============================");
+		System.out.println("Nombre: " + nombre);
+		System.out.println("Apellidos: " + apellidos);
+		System.out.println("Edad: " + edad);
+		System.out.println("DNI: " + dni);
+		System.out.println("E-mail: " + email);
+		System.out.println("Nombre de usuario: " + nUsuario);
+		System.out.println("Contrasenya: " + contrasenya);
+		System.out.println("===============================");
 		System.out.println("");
 		
 		boolean bucle = true;
 
 		//Bucle do-while para controlar la respuesta del usuario
 		do {
-		System.out.print("R. Registrar Cliente / M. Volver al menu: ");
+		System.out.print("R. Registrar empleado / M. Volver al menu: ");
 		String respuesta = sc.nextLine().toUpperCase();
 		
 		switch(respuesta) {
@@ -188,6 +193,7 @@ public class GestionEmpleado {
 			break;
 			
 		case "M":
+			System.out.println("El empleado no ha sido registrado.");
 			menuEmpleados();
 			break;
 		
@@ -212,11 +218,11 @@ public class GestionEmpleado {
 			ResultSet rs = stmt.executeQuery(query);
 			try {
 				// Creamos un directorio para almacenar el fichero txt con el listado de empleados
-				File dir = new File("C:\\empleados");
+				File dir = new File("C:\\informes");
 				dir.mkdir();
 				
 				// Creamos el archivo empleados.txt dentro del directorio que hemos creado
-				File archivo = new File("C:\\empleados\\empleados.txt");
+				File archivo = new File("C:\\informes\\empleados.txt");
 				
 				// Creamos un objeto de tipo FileWriter
 				FileWriter wt = new FileWriter(archivo);

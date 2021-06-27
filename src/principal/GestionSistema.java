@@ -72,7 +72,7 @@ public class GestionSistema {
 			case "C":
 				System.out.println("");
 				System.out.println("Cerrando sesion...");
-				System.exit(0);
+				login();
 				break;
 
 			case "S":
@@ -116,7 +116,7 @@ public class GestionSistema {
 			System.out.println("");
 			System.out.println("");
 			try {
-				System.out.print("            1. Inicia sesion: ");
+				System.out.print("1. Inicia sesion: ");
 				opc = sc.nextInt();
 
 				if (opc == 1) {
@@ -142,18 +142,14 @@ public class GestionSistema {
 		do {
 			System.out.println("");
 			System.out.println("");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("*******************************");
-			System.out.println("*******  INICIA SESION  *******");
-			System.out.println("*******************************");
+			System.out.println("INICIA SESION");
 			System.out.println("");
 
 			// Pedimos usuario y contrasena al usuario
-			System.out.print("       Introduzca su usuario: ");
+			System.out.print("Introduzca su usuario: ");
 			String usuario = sc2.next();
 			System.out.println("");
-			System.out.print("       Introduzca su contrasena: ");
+			System.out.print("Introduzca su contrasena: ");
 			String passwd = sc2.next();
 			System.out.println("");
 
