@@ -11,10 +11,11 @@ import java.util.Scanner;
 
 import principal.GestionSistema;
 
-// Librer�as para restar fechas
+// Librerias para restar fechas
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class GestionPatinete {
 
@@ -64,6 +65,7 @@ public class GestionPatinete {
 			break;
 
 		case "2":
+			System.out.println(listarPatinetesDisponibles(conexion, Utilidades.NOMBRE_BBDD));
 			alquilarPatinete(conexion, Utilidades.NOMBRE_BBDD);
 			break;
 
@@ -77,7 +79,7 @@ public class GestionPatinete {
 
 		case "5":
 			String listadoPatinetesAlquilados = obtenerPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD);
-			exportarListadoPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD,listadoPatinetesAlquilados);
+			exportarListadoPatinetesAlquilados(conexion, Utilidades.NOMBRE_BBDD, listadoPatinetesAlquilados);
 			break;
 
 		case "6":
@@ -86,7 +88,7 @@ public class GestionPatinete {
 
 		case "7":
 			String listadoPatinetes = obtenerPatinetes(conexion, Utilidades.NOMBRE_BBDD);
-			exportarListadoPatinetes(conexion, Utilidades.NOMBRE_BBDD,listadoPatinetes);
+			exportarListadoPatinetes(conexion, Utilidades.NOMBRE_BBDD, listadoPatinetes);
 			break;
 
 		case "M":
@@ -192,7 +194,7 @@ public class GestionPatinete {
 
 		// Instanciamos el teclado para pedir datos al usuario
 		Scanner teclado = new Scanner(System.in);
-		
+
 		// Recogida de datos introducidos por el usuario
 		System.out.println();
 		System.out.println("ALQUILAR PATINETE");
@@ -233,18 +235,25 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// Transformamos las fechas introducidas por teclado a LocalDate, para poder
-				// calcular la diferencia de dias entre ellas
-				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
-				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
-				// Calcula la diferencia en dias entre las fechas introducidas
-				long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
+				try {
+					// Transformamos las fechas introducidas por teclado a LocalDate, para poder
+					// calcular la diferencia de dias entre ellas
+					LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
+					LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
 
-				// Mensaje que confirma la ejecucion de la consulta
-				System.out.println();
-				System.out.println("El alquiler ha sido realizado con exito.");
-				System.out.println("El patinete " + numeroSerie + ", ha sido alquilado al cliente con DNI: "
-						+ dniUsuario + ", durante " + diff + " dia/s.");
+					// Calcula la diferencia en dias entre las fechas introducidas
+					long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
+
+					// Mensaje que confirma la ejecucion de la consulta
+					System.out.println();
+					System.out.println("El alquiler ha sido realizado con exito.");
+					System.out.println("El patinete " + numeroSerie + ", ha sido alquilado al cliente con DNI: "
+							+ dniUsuario + ", durante " + diff + " dia/s.");
+
+				} catch (DateTimeParseException e) {
+					System.out.println(
+							"El formato de fecha debe ser AAAA/MM/DD.\n" + "Por favor, introduzca la fecha correcta.");
+				}
 
 				// Cerramos la conexion
 				stmt.close();
@@ -331,25 +340,29 @@ public class GestionPatinete {
 				stmt.executeUpdate(query);
 				stmt.executeUpdate(query1);
 
-				// Transformamos las fechas introducidas por teclado a LocalDate, para poder
-				// calcular la diferencia de dias entre ellas
-				LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
-				LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
-				// Calcula la diferencia en dias entre las fechas introducidas
-				long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
+				try {
+					// Transformamos las fechas introducidas por teclado a LocalDate, para poder
+					// calcular la diferencia de dias entre ellas
+					LocalDate dBefore = LocalDate.parse(fechaA, DateTimeFormatter.ISO_LOCAL_DATE);
+					LocalDate dAfter = LocalDate.parse(fechaD, DateTimeFormatter.ISO_LOCAL_DATE);
+					// Calcula la diferencia en dias entre las fechas introducidas
+					long diff = ChronoUnit.DAYS.between(dBefore, dAfter);
 
-				// Mensaje que confirma la ejecucion de la consulta
-				System.out.println();
-				System.out.println("La devolucion ha sido realizada con exito.");
-				System.out.println("El patinete " + numeroSerie + ", ha sido devuelto por el cliente con DNI: "
-						+ dniUsuario + ". Ha tenido el patinete en alquiler durante " + diff + " dias.");
-
+					// Mensaje que confirma la ejecucion de la consulta
+					System.out.println();
+					System.out.println("La devolucion ha sido realizada con exito.");
+					System.out.println("El patinete " + numeroSerie + ", ha sido devuelto por el cliente con DNI: "
+							+ dniUsuario + ". Ha tenido el patinete en alquiler durante " + diff + " dias.");
+				} catch (DateTimeParseException e) {
+					System.out.println(
+							"El formato de fecha debe ser AAAA/MM/DD.\n" + "Por favor, introduzca la fecha correcta.");
+				}
 				// Cerramos la conexion
 				stmt.close();
 
 				// Volvemos al menu principal
 				GestionSistema.menu();
- 
+
 				// Llama al metodo que captura excepciones SQL
 			} catch (SQLException e) {
 				Utilidades.printSQLException(e);
@@ -377,6 +390,8 @@ public class GestionPatinete {
 
 	// Metodo para obtener el listado de patinetes alquilados
 	private static String obtenerPatinetesAlquilados(Connection conexion, String nombreBBDD) {
+
+		System.out.println();
 		// Variable que almacena el resultado de las consultas
 		String result = "Resultado de la busqueda: \n";
 
@@ -428,7 +443,7 @@ public class GestionPatinete {
 
 		return result;
 	}
-	
+
 	// Metodo que devuelve el listado de patinetes alquilados
 	private static String listarPatinetesAlquilados(Connection conexion, String nombreBBDD) {
 
@@ -465,47 +480,49 @@ public class GestionPatinete {
 
 		return result;
 	}
-	
-	// Metodo para obtener el listado de patinetes alquilados
-		private static String listarPatinetesDisponibles(Connection conexion, String nombreBBDD) {
-			
-			// Variable que almacena el resultado de las consultas
-			String result = "\nPatinetes disponibles: \n";
+
+	// Metodo para obtener el listado de patinetes disponibles
+	private static String listarPatinetesDisponibles(Connection conexion, String nombreBBDD) {
+
+		System.out.println();
+		// Variable que almacena el resultado de las consultas
+		String result = "Patinetes disponibles: \n";
+
+		// Objeto de tipo Statement para establecer la conexion
+		Statement stmt = null;
+
+		// Variable para realizar la consulta
+		String query = "select * " + "from " + nombreBBDD + ".patinete " + "where Disponible = true ";
+
+		try {
 
 			// Objeto de tipo Statement para establecer la conexion
-			Statement stmt = null;
+			stmt = conexion.createStatement();
 
-			// Variable para realizar la consulta
-			String query = "select * " + "from " + nombreBBDD + ".patinete " + "where Disponible = true ";
+			// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto
+			// stmt y su metodo en el cual le pasamos por parametro la variable local
+			ResultSet rs = stmt.executeQuery(query);
 
-			try {
+			// Mientras rs siga recibiendo informacion almacena el resultado en la variable
+			while (rs.next()) {
 
-				// Objeto de tipo Statement para establecer la conexion
-				stmt = conexion.createStatement();
+				String numeroSerie = rs.getString(5);
+				result += "Numero de serie: " + numeroSerie + "\n";
 
-				// Objeto de tipo ResulSet para recibir la informacion, a traves del objeto
-				// stmt y su metodo en el cual le pasamos por parametro la variable local
-				ResultSet rs = stmt.executeQuery(query);
-
-				// Mientras rs siga recibiendo informacion almacena el resultado en la variable
-				while (rs.next()) {
-			
-					String numeroSerie = rs.getString(5);
-					result += "Numero de serie: " + numeroSerie + "\n";
-
-					}
-	
-				// Llama al metodo que captura excepciones SQL
-			} catch (SQLException e) {
-				Utilidades.printSQLException(e);
 			}
 
-			return result;
+			// Llama al metodo que captura excepciones SQL
+		} catch (SQLException e) {
+			Utilidades.printSQLException(e);
 		}
 
+		return result;
+	}
 
 	// Metodo para obtener el listado de todos los patinetes
 	private static String obtenerPatinetes(Connection conexion, String nombreBBDD) {
+
+		System.out.println();
 		// Variable que almacena el resultado de las consultas
 		String result = "Resultado de la busqueda: \n";
 
@@ -594,12 +611,11 @@ public class GestionPatinete {
 	}
 
 	// Metodo para guardar el listado de patinetes alquilados en un fichero
-	private static void exportarListadoPatinetesAlquilados(Connection conexion, String nombreBBDD,String listado) {
+	private static void exportarListadoPatinetesAlquilados(Connection conexion, String nombreBBDD, String listado) {
 
 		try {
-			
-			String result = obtenerPatinetesAlquilados(conexion, nombreBBDD);
-			System.out.println(result);
+
+			System.out.println(listado);
 
 			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
@@ -640,13 +656,11 @@ public class GestionPatinete {
 	}
 
 	// Metodo para guardar el listado de patinetes en un fichero
-	private static void exportarListadoPatinetes(Connection conexion, String nombreBBDD,String listado) {
+	private static void exportarListadoPatinetes(Connection conexion, String nombreBBDD, String listado) {
 
 		try {
-			
-			//String result = obtenerPatinetes(conexion, nombreBBDD);
 
-			//System.out.println(result);
+			System.out.println(listado);
 
 			// Seleccionamos la ruta y la carpeta en la cual se guardara el archivo
 			File ruta = new File("C:" + File.separator + "informes");
@@ -686,12 +700,14 @@ public class GestionPatinete {
 		GestionSistema.menu();
 	}
 
-	// Metodo que comprueba que haya un patinete registrado con el numero de serie que nos pasan
+	// Metodo que comprueba que haya un patinete registrado con el numero de serie
+	// que nos pasan
 	// por parametro
 	private static boolean existePatinete(Connection conexion, String nombreBBDD, String numeroSerie) {
 
 		// Variable que almacena la consulta a la base de datos
-		String compruebaPatinete = "select 1 " + "from " + nombreBBDD + ".patinete" + " where NumeroSerie = '" + numeroSerie + "'";
+		String compruebaPatinete = "select 1 " + "from " + nombreBBDD + ".patinete" + " where NumeroSerie = '"
+				+ numeroSerie + "'";
 
 		// Objeto de tipo Statement para establecer la conexion
 		Statement stmt = null;

@@ -58,7 +58,7 @@ public class GestionCliente {
 		case "3":
 			listarClientes(conexion, Utilidades.NOMBRE_BBDD);
 			break;
-		case "4":
+		case "4":			
 			String listadoClientes = obtenerClientes(conexion, Utilidades.NOMBRE_BBDD);
 			exportarListadoClientes(conexion, Utilidades.NOMBRE_BBDD,listadoClientes);
 			break;
@@ -250,6 +250,8 @@ public class GestionCliente {
 	}
 
 	private static String obtenerClientes(Connection conexion, String nombreBBDD) {
+		
+		System.out.println();
 		// Variable que almacena el resultado de las consultas
 		String result = "Resultado de la busqueda: \n";
 
